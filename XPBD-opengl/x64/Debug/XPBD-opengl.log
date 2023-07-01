@@ -1,0 +1,11 @@
+﻿  particlemanager.cpp
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\particlemanager.cpp(16,26): error C2676: binary '[': '_Ty1' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty1=const std::pair<int,int>
+          ]
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\particlemanager.cpp(16,48): error C2676: binary '[': '_Ty1' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty1=const std::pair<int,int>
+          ]
