@@ -135,13 +135,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collisionconstraint.cpp" />
+    <ClCompile Include="collisionconstraintmanager.cpp" />
     <ClCompile Include="constraint.cpp" />
+    <ClCompile Include="constraintmanager.cpp" />
     <ClCompile Include="distanceconstraint.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maxpositionconstraint.cpp" />
     <ClCompile Include="particle.cpp" />
-    <ClCompile Include="particlemanager.cpp" />
+    <ClCompile Include="spatialhashgrid.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="solver.cpp" />
     <ClCompile Include="stb_define.cpp" />
@@ -150,13 +152,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collisionconstraint.h" />
+    <ClInclude Include="collisionconstraintmanager.h" />
+    <ClInclude Include="constraintmanager.h" />
     <ClInclude Include="constraint.h" />
     <ClInclude Include="distanceconstraint.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="instanceData.h" />
     <ClInclude Include="maxpositionconstraint.h" />
     <ClInclude Include="particle.h" />
-    <ClInclude Include="particlemanager.h" />
+    <ClInclude Include="spatialhashgrid.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="solver.h" />
     <ClInclude Include="stb_image.h" />

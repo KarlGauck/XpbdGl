@@ -7,7 +7,7 @@
 #include "Vec2.h"
 #include "constraint.h"
 #include "particle.h"
-#include "particlemanager.h"
+#include "collisionconstraintmanager.h"
 
 class Solver {
 public:
@@ -18,7 +18,9 @@ public:
 private:
 	std::vector<Particle*> particles;
 	std::vector<Constraint*> constraints;
-	ParticleManager particleManager;
+	CollisionConstraintManager collisionManager;
+
+	void solveConstraints(std::vector<Constraint*>& constraints, float dt);
 };
 
 

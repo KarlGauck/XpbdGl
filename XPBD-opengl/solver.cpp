@@ -12,7 +12,7 @@
 #include "maxpositionconstraint.h"
 #include "constraint.h"
 
-Solver::Solver() 
+Solver::Solver(): collisionManager(particles)
 {
 }
 
@@ -35,7 +35,23 @@ void Solver::solve()
 			particle.pos += particle.vel * dt;
 		}
 
-		for (int constraintIndex = 0; constraintIndex < constraints.size(); constraintIndex++) 
+		solveConstraints(constraints, dt);
+
+		auto additional = collisionManager.calculateConstraints();
+		solveConstraints(additional, dt);
+
+		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
+		{
+			Particle& particle = *particles[particleIndex];
+			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
+		}
+
+	}
+}
+
+void Solver::solveConstraints(std::vector<Constraint*>& constraints, float dt)
+{
+	for (int constraintIndex = 0; constraintIndex < constraints.size(); constraintIndex++) 
 		{
 			Constraint& constraint = *constraints[constraintIndex];
 
@@ -49,16 +65,6 @@ void Solver::solve()
 				particle.pos += deltaPos;
 			}
 		}
-
-		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-		{
-			Particle& particle = *particles[particleIndex];
-			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
-		}
-
-		particleManager.updateParticles();
-
-	}
 }
 
 void Solver::addParticle(Vec2 pos)
@@ -70,8 +76,7 @@ void Solver::addParticle(Vec2 pos)
 			Vec2(0.0f, 0.0f)
 		)
 	);
-	Particle& particle = *particles[particles.size() - 1];
-	particleManager.addParticle(&particle);
+	collisionManager.addParticle(particles[particles.size() - 1]);
 
 	std::vector<Particle*> p1;
 	p1.push_back(particles[particles.size()-1]);
@@ -85,20 +90,6 @@ void Solver::addParticle(Vec2 pos)
 		)
 	);
 
-	for (Particle* particlePtr : particles)
-	{
-		if (particlePtr == particles[particles.size() - 1])
-			continue;
-		std::vector<Particle*> p2;
-		p2.push_back(particlePtr);
-		p2.push_back(particles[particles.size() - 1]);
-		constraints.push_back(
-			new CollisionConstraint(
-				p2
-			)
-		);
-	}
-	
 }
 
 std::vector<float> Solver::getPositions() 
@@ -115,5 +106,3 @@ std::vector<float> Solver::getPositions()
 	}
 	return positions;
 }
-
-

@@ -28,14 +28,20 @@
     <Filter Include="Source Files\Physics\Constraints">
       <UniqueIdentifier>{23bef619-f2ab-4e78-a4b2-dae2a8ee038a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Rendering">
-      <UniqueIdentifier>{6fdf6398-e020-42a4-a521-9e1b1d9ddfb5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{b819eb11-128f-45f0-bb6c-95ea74af6057}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Physics\Constraints">
       <UniqueIdentifier>{bae410ef-45a6-4b2d-aeb2-c17cf3670db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\ConstraintManagers">
+      <UniqueIdentifier>{2f251cee-1c9b-46fe-9e0e-65020c6e1c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{6fdf6398-e020-42a4-a521-9e1b1d9ddfb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\ConstraintManagers">
+      <UniqueIdentifier>{cc461baa-f2dd-481f-a4fd-a0ce7791dd64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +81,15 @@
     <ClCompile Include="collisionconstraint.cpp">
       <Filter>Source Files\Physics\Constraints</Filter>
     </ClCompile>
+    <ClCompile Include="spatialhashgrid.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="constraintmanager.cpp">
+      <Filter>Source Files\Physics\ConstraintManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionconstraintmanager.cpp">
+      <Filter>Source Files\Physics\ConstraintManagers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -106,6 +121,15 @@
     </ClInclude>
     <ClInclude Include="collisionconstraint.h">
       <Filter>Header Files\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="spatialhashgrid.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="constraintmanager.h">
+      <Filter>Header Files\Physics\ConstraintManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionconstraintmanager.h">
+      <Filter>Header Files\Physics\ConstraintManagers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

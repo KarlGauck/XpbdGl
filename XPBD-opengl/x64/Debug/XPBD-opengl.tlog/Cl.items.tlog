@@ -1,11 +1,13 @@
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\collisionconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\collisionconstraint.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\collisionconstraintmanager.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\collisionconstraintmanager.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\constraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\constraint.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\constraintmanager.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\constraintmanager.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\distanceconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\distanceconstraint.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\game.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\game.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\main.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\main.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\maxpositionconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\maxpositionconstraint.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\particle.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\particle.obj
-C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\particlemanager.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\particlemanager.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\spatialhashgrid.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\spatialhashgrid.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\renderer.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\renderer.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\solver.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\solver.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\stb_define.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\stb_define.obj

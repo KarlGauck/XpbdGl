@@ -1,0 +1,22 @@
+#include <map>
+#include <tuple>
+#include <vector>
+
+#include "particlemanager.h"
+#include "particle.h"
+
+ParticleManager::ParticleManager()
+{}
+
+void ParticleManager::updateParticles()
+{
+	for (auto &cell : particleGrid)
+	{
+		std::vector<Particle*>& particles = cell.second;
+		int xPos = cell.first;
+		for (Particle* particlePtr : particles)
+		{
+			
+		}
+	}
+}
