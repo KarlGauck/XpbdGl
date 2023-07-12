@@ -108,5 +108,15 @@ void Game::handleEvents() {
 			float xOffset = (float)(SCREEN_WIDTH / 2);
 			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
 		}
+		/*
+		if (e.type == SDL_MOUSEMOTION)
+		{
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			float yOffset = (float)(SCREEN_HEIGHT / 2);
+			float xOffset = (float)(SCREEN_WIDTH / 2);
+			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
+		}
+		*/
 	}
 }

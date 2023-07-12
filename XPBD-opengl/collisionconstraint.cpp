@@ -27,6 +27,7 @@ void CollisionConstraint::add(Particle* particles[ParticleCountMax])
 
 void CollisionConstraint::solve(float dt)
 {
+	std::cout << currentIndex << std::endl;
 	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
 	{
 		// Calculate Gradients
@@ -64,13 +65,21 @@ Vec2 CollisionConstraint::calculateGradient(Particle& particle)
 	if (particles[0] == &particle)
 		other = particles[1];
 	else other = particles[0];
+	//Vec2 temp = other->pos - particle.pos;
+	//return Vec2(pow(temp.x, 2.0f), pow(temp.y, 2.0f));
 	return (other->pos - particle.pos).normalized();
 }
 
 void CollisionConstraint::calculateError()
 {
 	float distance = particles[0]->pos.distance(particles[1]->pos);
+	//float distance = pow(particles[0]->pos.x - particles[1]->pos.x, 2.0f) + pow(particles[0]->pos.y - particles[1]->pos.y, 2.0f);
 	if (distance < 1)
 		error = 1-distance;
 	else error = 0;
+}
+
+void CollisionConstraint::clear()
+{
+	currentIndex = 0;
 }

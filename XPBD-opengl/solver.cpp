@@ -35,7 +35,7 @@ void Solver::solve()
 			particle.pos += particle.vel * dt;
 		}
 
-		ConstraintManager::solveConstraints(dt);
+		ConstraintManager::solveConstraints(particles, dt);
 
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 		{

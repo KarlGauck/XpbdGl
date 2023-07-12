@@ -14,7 +14,7 @@ MaxPositionConstraint::MaxPositionConstraint() {};
 
 MaxPositionConstraint::MaxPositionConstraint
 (Particle* particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin) :
-	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin)
+	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin), compliance(0.00001f)
 {
 	for (int i = 0; i < ParticleCountMax; i++)
 	{
@@ -33,6 +33,7 @@ void MaxPositionConstraint::add(Particle* particles[ParticleCountMax], float xMa
 
 void MaxPositionConstraint::solve(float dt)
 {
+	std::cout << currentIndex << std::endl;
 	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
 	{
 		// Calculate Gradients

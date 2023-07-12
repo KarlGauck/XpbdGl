@@ -135,7 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collisionconstraint.cpp" />
-    <ClCompile Include="collisionconstraintmanager.cpp" />
+    <ClCompile Include="collisionconstrainthandler.cpp" />
     <ClCompile Include="constraintmanager.cpp" />
     <ClCompile Include="distanceconstraint.cpp" />
     <ClCompile Include="game.cpp" />
@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collisionconstraint.h" />
+    <ClInclude Include="collisionconstrainthandler.h" />
     <ClInclude Include="constraintmanager.h" />
     <ClInclude Include="distanceconstraint.h" />
     <ClInclude Include="game.h" />

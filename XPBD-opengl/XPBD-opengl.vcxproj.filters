@@ -37,8 +37,11 @@
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{6fdf6398-e020-42a4-a521-9e1b1d9ddfb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Physics\ConstraintManagers">
-      <UniqueIdentifier>{cc461baa-f2dd-481f-a4fd-a0ce7791dd64}</UniqueIdentifier>
+    <Filter Include="Header Files\Physics\DynamicConstraintHandlers">
+      <UniqueIdentifier>{d387565c-9999-4c90-a73c-aaff6dd2a5b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\DynamicConstraintHandlers">
+      <UniqueIdentifier>{1e638cea-8d4a-44f6-a7b5-a2933f49cb3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,10 +82,10 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="constraintmanager.cpp">
-      <Filter>Source Files\Physics\ConstraintManagers</Filter>
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="collisionconstraintmanager.cpp">
-      <Filter>Source Files\Physics\ConstraintManagers</Filter>
+    <ClCompile Include="collisionconstrainthandler.cpp">
+      <Filter>Source Files\Physics\DynamicConstraintHandlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +120,10 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="constraintmanager.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionconstrainthandler.h">
+      <Filter>Header Files\Physics\DynamicConstraintHandlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

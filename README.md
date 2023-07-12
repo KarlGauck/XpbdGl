@@ -2,8 +2,19 @@
 This project is my attempt to implement a general purpose physics-engine.
 It is written in C++ and OpenGl is used for visualisation.
 
-Planned Features include:
+### Implemented:
+- Default XPBD solver algorithm (lots of redundancy (no polymorphism, bad))
+- CollisionConstraints, MaxPositionConstraints (BoxConstraints), DistanceConstraints
+- Dynamic constraint handlers
+- Spacial hashing for dynamic handlers
+
+### Planned Features include:
 - Fluid Dynamics using SPH kernel functions
 - Rigid Bodies
 - Soft Bodies
 - Coupeling between different objects (fluid and rigid bodies for example)
+
+### Current Problem: 
+- Collision Detection works faster without spacial hashing
+something is odd for sure :)
+

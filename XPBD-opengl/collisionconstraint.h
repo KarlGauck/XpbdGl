@@ -15,6 +15,8 @@ public:
 	
 	static void solve(float dt);
 	static void add(Particle* particles[ParticleCountMax]);
+
+	static void clear();
 public:
 	Vec2 calculateGradient(Particle& particle);
 
