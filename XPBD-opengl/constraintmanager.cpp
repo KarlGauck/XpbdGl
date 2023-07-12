@@ -1,9 +1,11 @@
 #include "constraintmanager.h"
+#include "collisionconstraint.h"
+#include "distanceconstraint.h"
+#include "maxpositionconstraint.h"
 
-ConstraintManager::ConstraintManager(std::vector<Particle*> particles): particles(particles)
-{}
-
-void ConstraintManager::addParticle(Particle* particle)
+void ConstraintManager::solveConstraints(float dt)
 {
-	particles.push_back(particle);
+	CollisionConstraint::solve(dt);
+	DistanceConstraint::solve(dt);
+	MaxPositionConstraint::solve(dt);
 }

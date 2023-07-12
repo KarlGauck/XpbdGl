@@ -4,15 +4,62 @@
 #include "distanceconstraint.h"
 #include "Vec2.h"
 
-DistanceConstraint::DistanceConstraint(std::vector<Particle*> particles, float compliance, float distance): Constraint(particles, compliance)
+int DistanceConstraint::currentIndex = 0;
+DistanceConstraint DistanceConstraint::constraints[ConstraintCountMax];
+
+DistanceConstraint::DistanceConstraint() {};
+
+DistanceConstraint::DistanceConstraint(Particle* particles[ParticleCountMax], float distance):
+	distance(distance), compliance(0.0f)
 {
-	this->distance = distance;
-	if (particles.size() != 2) {
-		std::cout << "Particle vector of distance constraint must be of size 2" << std::endl;
+	for (int i = 0; i < ParticleCountMax; i++)
+	{
+		this->particles[i] = particles[i];
 	}
 };
 
-Vec2 DistanceConstraint::gradient(Particle& particle)
+void DistanceConstraint::add(Particle* particles[ParticleCountMax], float distance)
+{
+	if (currentIndex >= ConstraintCountMax)
+		return;
+	constraints[currentIndex] = DistanceConstraint(particles, distance);
+	currentIndex++;
+}
+
+void DistanceConstraint::solve(float dt)
+{
+	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
+	{
+		// Calculate Gradients
+		DistanceConstraint& constraint = constraints[constraintIndex];
+		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
+			constraint.gradient[particleIndex] = constraint.calculateGradient(*constraint.particles[particleIndex]);
+
+		// Calculate Error
+		constraint.calculateError();
+
+		// Calculate Lamba
+		float weightedMass = 0.f;
+		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
+		{
+			Particle& particle = *constraint.particles[particleIndex];
+			Vec2 grad = constraint.gradient[particleIndex];
+			weightedMass += (1/particle.mass) * grad.dot(grad);
+		}
+		constraint.lambda = -constraint.error / (weightedMass + (constraint.compliance/pow(dt, 2)));
+
+		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
+		{
+			Particle& particle = *constraint.particles[particleIndex];
+			Vec2 deltaPos = constraint.gradient[particleIndex] * constraint.lambda * (1/particle.mass);
+			particle.oldPos = particle.pos;
+			particle.pos += deltaPos;
+		}
+	}
+
+}
+
+Vec2 DistanceConstraint::calculateGradient(Particle& particle)
 {
 	Particle* other = nullptr;
 	if (particles[0] == &particle)

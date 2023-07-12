@@ -1,6 +1,8 @@
 #include <vector>
 #include <iostream>
 
+
+/*
 #include "collisionconstraintmanager.h"
 #include "constraint.h"
 #include "collisionconstraint.h"
@@ -53,3 +55,4 @@ std::vector<Constraint*> CollisionConstraintManager::calculateConstraints()
 
 	return constraints;
 }
+*/

@@ -10,15 +10,15 @@
 #include "collisionconstraint.h"
 #include "distanceconstraint.h"
 #include "maxpositionconstraint.h"
-#include "constraint.h"
+#include "constraintmanager.h"
 
-Solver::Solver(): collisionManager(particles)
-{
+Solver::Solver(){
 }
 
 void Solver::solve() 
 {
 	float dtUncorrected = 0.03f;
+
 	float substepNumber = 10;
 	for (int substep = 0; substep < substepNumber; substep++) {
 		float dt = dtUncorrected / substepNumber;
@@ -35,36 +35,15 @@ void Solver::solve()
 			particle.pos += particle.vel * dt;
 		}
 
-		solveConstraints(constraints, dt);
-
-		auto additional = collisionManager.calculateConstraints();
-		solveConstraints(additional, dt);
+		ConstraintManager::solveConstraints(dt);
 
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 		{
 			Particle& particle = *particles[particleIndex];
 			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
 		}
-
 	}
-}
 
-void Solver::solveConstraints(std::vector<Constraint*>& constraints, float dt)
-{
-	for (int constraintIndex = 0; constraintIndex < constraints.size(); constraintIndex++) 
-		{
-			Constraint& constraint = *constraints[constraintIndex];
-
-			constraint.calculateError();
-			constraint.calculateLambda(dt);
-
-			for (int particleIndex = 0; particleIndex < constraint.particles.size(); particleIndex++)
-			{
-				Particle& particle = *constraint.particles[particleIndex];
-				Vec2 deltaPos = constraint.deltaPos(particle);
-				particle.pos += deltaPos;
-			}
-		}
 }
 
 void Solver::addParticle(Vec2 pos)
@@ -76,20 +55,27 @@ void Solver::addParticle(Vec2 pos)
 			Vec2(0.0f, 0.0f)
 		)
 	);
-	collisionManager.addParticle(particles[particles.size() - 1]);
 
-	std::vector<Particle*> p1;
-	p1.push_back(particles[particles.size()-1]);
-	constraints.push_back(
-		new MaxPositionConstraint(
-			p1,
-			14.5f,
-			7.5f,
-			-14.5f,
-			-7.5f
-		)
+	Particle* particlePtr = particles[particles.size() - 1];
+
+	Particle* p1[1];
+	p1[0] = particlePtr;
+	std::cout << p1[0] << std::endl;
+	MaxPositionConstraint::add(
+		p1,
+		14.5f,
+		7.5f,
+		-14.5f,
+		-7.5f
 	);
 
+	for (Particle* ptr : particles)
+	{
+		if (ptr == particlePtr)
+			continue;
+		Particle* collisionParticles[2] = { ptr, particlePtr };
+		CollisionConstraint::add(collisionParticles);
+	}
 }
 
 std::vector<float> Solver::getPositions() 

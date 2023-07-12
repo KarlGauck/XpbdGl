@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Physics\Constraints">
       <UniqueIdentifier>{bae410ef-45a6-4b2d-aeb2-c17cf3670db3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\ConstraintManagers">
-      <UniqueIdentifier>{2f251cee-1c9b-46fe-9e0e-65020c6e1c09}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{6fdf6398-e020-42a4-a521-9e1b1d9ddfb5}</UniqueIdentifier>
     </Filter>
@@ -62,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="Vec2.cpp">
       <Filter>Source Files\Physics\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="constraint.cpp">
-      <Filter>Source Files\Physics\Constraints</Filter>
     </ClCompile>
     <ClCompile Include="distanceconstraint.cpp">
       <Filter>Source Files\Physics\Constraints</Filter>
@@ -101,9 +95,6 @@
     <ClInclude Include="solver.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="constraint.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
-    </ClInclude>
     <ClInclude Include="distanceconstraint.h">
       <Filter>Header Files\Physics\Constraints</Filter>
     </ClInclude>
@@ -126,10 +117,7 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="constraintmanager.h">
-      <Filter>Header Files\Physics\ConstraintManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="collisionconstraintmanager.h">
-      <Filter>Header Files\Physics\ConstraintManagers</Filter>
+      <Filter>Header Files\Physics\Constraints</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

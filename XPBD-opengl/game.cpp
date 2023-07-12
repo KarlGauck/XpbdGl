@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 #include "game.h"
 #include "renderer.h"
@@ -23,6 +24,8 @@ void Game::startLoop() {
 	
 	std::vector<float> positions;
 	while (!quit) {
+		auto start = std::chrono::high_resolution_clock::now();
+
 		handleEvents();
 
 		solver.solve();
@@ -42,6 +45,10 @@ void Game::startLoop() {
 		rectangleRenderer.render(false);
 
 		SDL_GL_SwapWindow(window);
+
+		auto end = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		std::cout << 1000.f/duration.count() << " FPS" << std::endl;
 	}
 }
 

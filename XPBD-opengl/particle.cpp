@@ -2,9 +2,5 @@
 
 #include "particle.h"
 
-Particle::Particle(float mass, Vec2 pos, Vec2 vel) 
-{
-	this->mass = mass;
-	this->pos = pos;
-	this->vel = vel;
-}
+Particle::Particle(float mass, Vec2 pos, Vec2 vel): mass(mass), pos(pos), vel(vel), oldPos(pos)
+{}
