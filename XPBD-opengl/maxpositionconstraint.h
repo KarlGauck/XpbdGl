@@ -13,19 +13,19 @@ public:
 
 	const static int ParticleCountMax = 1;
 	
-	static void solve(float dt);
-	static void add(Particle* particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin);
+	static void solve(std::vector<Particle>& globalParticles, float dt);
+	static void add(int particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin);
 public:
-	Particle* particles[ParticleCountMax];
+	int particles[ParticleCountMax];
 	Vec2 gradient[ParticleCountMax];
 
 	Vec2 calculateGradient(Particle& particle);
 
-	void calculateError();
+	void calculateError(std::vector<Particle>& globalParticles);
 
 	MaxPositionConstraint();
 private:
-	MaxPositionConstraint(Particle* particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin);
+	MaxPositionConstraint(int particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin);
 
 	static int currentIndex;
 	float compliance;

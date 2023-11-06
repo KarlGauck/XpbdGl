@@ -9,7 +9,7 @@ DistanceConstraint DistanceConstraint::constraints[ConstraintCountMax];
 
 DistanceConstraint::DistanceConstraint() {};
 
-DistanceConstraint::DistanceConstraint(Particle* particles[ParticleCountMax], float distance):
+DistanceConstraint::DistanceConstraint(int particles[ParticleCountMax], float distance):
 	distance(distance), compliance(0.0f)
 {
 	for (int i = 0; i < ParticleCountMax; i++)
@@ -18,7 +18,7 @@ DistanceConstraint::DistanceConstraint(Particle* particles[ParticleCountMax], fl
 	}
 };
 
-void DistanceConstraint::add(Particle* particles[ParticleCountMax], float distance)
+void DistanceConstraint::add(int particles[ParticleCountMax], float distance)
 {
 	if (currentIndex >= ConstraintCountMax)
 		return;
@@ -26,23 +26,23 @@ void DistanceConstraint::add(Particle* particles[ParticleCountMax], float distan
 	currentIndex++;
 }
 
-void DistanceConstraint::solve(float dt)
+void DistanceConstraint::solve(std::vector<Particle>& globalParticles, float dt)
 {
 	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
 	{
 		// Calculate Gradients
 		DistanceConstraint& constraint = constraints[constraintIndex];
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
-			constraint.gradient[particleIndex] = constraint.calculateGradient(*constraint.particles[particleIndex]);
+			constraint.gradient[particleIndex] = constraint.calculateGradient(globalParticles, globalParticles[constraint.particles[particleIndex]]);
 
 		// Calculate Error
-		constraint.calculateError();
+		constraint.calculateError(globalParticles);
 
 		// Calculate Lamba
 		float weightedMass = 0.f;
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
 		{
-			Particle& particle = *constraint.particles[particleIndex];
+			Particle& particle = globalParticles[constraint.particles[particleIndex]];
 			Vec2 grad = constraint.gradient[particleIndex];
 			weightedMass += (1/particle.mass) * grad.dot(grad);
 		}
@@ -50,7 +50,7 @@ void DistanceConstraint::solve(float dt)
 
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
 		{
-			Particle& particle = *constraint.particles[particleIndex];
+			Particle& particle = globalParticles[constraint.particles[particleIndex]];
 			Vec2 deltaPos = constraint.gradient[particleIndex] * constraint.lambda * (1/particle.mass);
 			particle.oldPos = particle.pos;
 			particle.pos += deltaPos;
@@ -59,17 +59,17 @@ void DistanceConstraint::solve(float dt)
 
 }
 
-Vec2 DistanceConstraint::calculateGradient(Particle& particle)
+Vec2 DistanceConstraint::calculateGradient(std::vector<Particle>& globalParticles, Particle& particle)
 {
 	Particle* other = nullptr;
-	if (particles[0] == &particle)
-		other = particles[1];
-	else other = particles[0];
+	if (&globalParticles[particles[0]] == &particle)
+		other = &globalParticles[particles[1]];
+	else other = &globalParticles[particles[0]];
 	return (particle.pos - other->pos).normalized();
 }
 
-void DistanceConstraint::calculateError()
+void DistanceConstraint::calculateError(std::vector<Particle>& globalParticles)
 {
-	float dist = (*particles[0]).pos.distance((*particles[1]).pos);
-	error = (*particles[0]).pos.distance((*particles[1]).pos) - distance;
+	float dist = (globalParticles[particles[0]]).pos.distance((globalParticles[particles[1]]).pos);
+	error = (globalParticles[particles[0]]).pos.distance((globalParticles[particles[1]]).pos) - distance;
 }

@@ -8,27 +8,27 @@
 class CollisionConstraint
 {
 public:
-	const static int ConstraintCountMax = 10000;
+	const static int ConstraintCountMax = 1000000;
 	static CollisionConstraint constraints[ConstraintCountMax];
 
 	const static int ParticleCountMax = 2;
 	
-	static void solve(float dt);
-	static void add(Particle* particles[ParticleCountMax]);
+	static void solve(std::vector<Particle>& globalParticles, float dt);
+	static void add(int particles[ParticleCountMax]);
 
 	static void clear();
 public:
-	Vec2 calculateGradient(Particle& particle);
+	Vec2 calculateGradient(std::vector<Particle>& globalParticles, Particle& particle);
 
-	void calculateError();
+	void calculateError(std::vector<Particle>& globalParticles);
 
-	Particle* particles[ParticleCountMax];
+	int particles[ParticleCountMax];
 	Vec2 gradient[ParticleCountMax];
 
 	CollisionConstraint();
 
 private:
-	CollisionConstraint(Particle* particles[ParticleCountMax]);
+	CollisionConstraint(int particles[ParticleCountMax]);
 
 	static int currentIndex;
 	float compliance;

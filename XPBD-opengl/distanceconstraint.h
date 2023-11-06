@@ -8,25 +8,25 @@
 class DistanceConstraint
 {
 public:
-	const static int ConstraintCountMax = 100;
+	const static int ConstraintCountMax = 10000;
 	static DistanceConstraint constraints[ConstraintCountMax];
 
 	const static int ParticleCountMax = 2;
 	
-	static void solve(float dt);
-	static void add(Particle* particles[ParticleCountMax], float distance);
+	static void solve(std::vector<Particle>& globalParticles, float dt);
+	static void add(int particles[ParticleCountMax], float distance);
 public:
-	Particle* particles[ParticleCountMax];
+	int particles[ParticleCountMax];
 	Vec2 gradient[ParticleCountMax];
 
-	Vec2 calculateGradient(Particle& particle);
+	Vec2 calculateGradient(std::vector<Particle>& globalParticles, Particle& particle);
 
-	void calculateError();
+	void calculateError(std::vector<Particle>& globalParticles);
 
 	DistanceConstraint();
 
 private:
-	DistanceConstraint(Particle* particles[ParticleCountMax], float distance);
+	DistanceConstraint(int particles[ParticleCountMax], float distance);
 
 	static int currentIndex;
 	float compliance;

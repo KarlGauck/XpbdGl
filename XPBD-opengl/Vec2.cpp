@@ -68,7 +68,7 @@ float Vec2::distance(const Vec2& other)
 
 void Vec2::normalize()
 {
-	float length = (float)sqrt(pow(x, 2) + pow(y, 2));
+	float length = (float)sqrt(x*x + y*y);
 	if (length != 0.f) 
 	{
 		x /= length;
@@ -79,7 +79,7 @@ void Vec2::normalize()
 
 Vec2 Vec2::normalized()
 {
-	float length = (float)sqrt(pow(x, 2) + pow(y, 2));
+	float length = (float)sqrt(x*x + y*y);
 	if (length != 0.f)
 		return Vec2(x / length, y / length);
 	return Vec2(x, y);

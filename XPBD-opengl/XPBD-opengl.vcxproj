@@ -74,6 +74,10 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -125,23 +129,28 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\include\GL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collisionconstraint.cpp" />
     <ClCompile Include="collisionconstrainthandler.cpp" />
     <ClCompile Include="constraintmanager.cpp" />
+    <ClCompile Include="densityconstraint.cpp" />
     <ClCompile Include="distanceconstraint.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maxpositionconstraint.cpp" />
     <ClCompile Include="particle.cpp" />
+    <ClCompile Include="profiler.cpp" />
     <ClCompile Include="spatialhashgrid.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="solver.cpp" />
@@ -153,11 +162,13 @@
     <ClInclude Include="collisionconstraint.h" />
     <ClInclude Include="collisionconstrainthandler.h" />
     <ClInclude Include="constraintmanager.h" />
+    <ClInclude Include="densityconstraint.h" />
     <ClInclude Include="distanceconstraint.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="instanceData.h" />
     <ClInclude Include="maxpositionconstraint.h" />
     <ClInclude Include="particle.h" />
+    <ClInclude Include="profiler.h" />
     <ClInclude Include="spatialhashgrid.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="solver.h" />

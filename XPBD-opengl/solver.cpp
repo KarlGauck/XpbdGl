@@ -3,6 +3,8 @@
 #include <iostream>
 #include <tuple>
 #include <map>
+#include <cmath>
+#include <algorithm>
 
 #include "Vec2.h"
 #include "solver.h"
@@ -11,23 +13,32 @@
 #include "distanceconstraint.h"
 #include "maxpositionconstraint.h"
 #include "constraintmanager.h"
+#include "profiler.h"
 
-Solver::Solver(){
+# define M_PI           3.14159265358979323846
+
+static Profiler pr("Profiler", 100);
+
+Solver::Solver() {
+	int MAX_PARTIClES = 10000;
+	particles.reserve(MAX_PARTIClES);
+	oldPositions.reserve(MAX_PARTIClES);
 }
 
 void Solver::solve() 
 {
-	float dtUncorrected = 0.03f;
+	pr.start();
+	float dtUncorrected = 0.03; // pr.duration * 0.000000015f;
 
-	float substepNumber = 10;
+	float substepNumber = 40;
 	for (int substep = 0; substep < substepNumber; substep++) {
 		float dt = dtUncorrected / substepNumber;
+		oldPositions.clear();
 
 		Vec2 gravityAccel(0.f, 9.81f);
-		std::vector<Vec2> oldPositions;
 
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) {
-			Particle& particle = *particles[particleIndex];
+			Particle& particle = particles[particleIndex];
 
 			oldPositions.push_back(particle.pos);
 
@@ -36,44 +47,85 @@ void Solver::solve()
 		}
 
 		ConstraintManager::solveConstraints(particles, dt);
+		//calculateSPH();
 
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 		{
-			Particle& particle = *particles[particleIndex];
+			Particle& particle = particles[particleIndex];
 			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
 		}
 	}
+	pr.end();
+}
 
+void Solver::addSoftBody(Vec2 pos)
+{
+	int width = 7;
+	int height = 7;
+	float gap = 1.3;
+	for (int x = -width/2; x <= width/2; x++)
+	{
+		for (int y = -height/2; y <= height/2; y++)
+		{
+			addParticle(pos + Vec2(x * gap, y * gap));
+			int index = particles.size() - 1;
+
+
+			/* BUGGY CODE: WILL CRASH, DO NOT USE!!!!
+			for (int dx = -1; dx <= 0; dx++) {
+				for (int dy = -1; dy <= 0; dy++) {
+					bool run = true;
+					if (dx == 0 && dy == 0)
+						run = false;
+					if (x == -width / 2 && dx != 0)
+						run = false;
+					if (y == -width / 2 && dy != 0)
+						run = false;
+					if (!run)
+					{
+						std::cout << "x: " << x << " dx: " << dx << " y: " << y << " dy: " << dy << std::endl;
+						continue;
+					}
+					int nIndex = index + dy * width + dx;
+					std::cout << nIndex << " size: " << particles.size();
+					int parts[2] = {index, nIndex};
+					DistanceConstraint::add(parts, sqrt((dx*gap)*(dx*gap) + (dy*gap)*(dy*gap)));
+				}
+			}
+			*/
+		}
+	}
 }
 
 void Solver::addParticle(Vec2 pos)
 {
 	particles.push_back(
-		new Particle(
+		Particle(
+			1.0f,
 			1.0f,
 			pos,
 			Vec2(0.0f, 0.0f)
 		)
 	);
 
-	Particle* particlePtr = particles[particles.size() - 1];
+	int p1[1];
+	p1[0] = particles.size() - 1;
 
-	Particle* p1[1];
-	p1[0] = particlePtr;
-	std::cout << p1[0] << std::endl;
+	float width = 100;
+	float height = 50;
 	MaxPositionConstraint::add(
 		p1,
-		14.5f,
-		7.5f,
-		-14.5f,
-		-7.5f
+		((width-1)/2),
+		((height-1)/2),
+		-((width-1)/2),
+		-((height-1)/2)
 	);
 
-	for (Particle* ptr : particles)
+	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
-		if (ptr == particlePtr)
+		if (particleIndex == particles.size()-1)
 			continue;
-		Particle* collisionParticles[2] = { ptr, particlePtr };
+		int collisionParticles[2] = { particleIndex, particles.size()-1};
 		CollisionConstraint::add(collisionParticles);
 	}
 }
@@ -81,8 +133,7 @@ void Solver::addParticle(Vec2 pos)
 std::vector<float> Solver::getPositions() 
 {
 	std::vector<float> positions;
-	for (Particle* particlePtr : particles) {
-		Particle& particle = *particlePtr;
+	for (Particle& particle : particles) {
 		positions.push_back(particle.pos.x);
 		positions.push_back(particle.pos.y);
 
@@ -92,3 +143,30 @@ std::vector<float> Solver::getPositions()
 	}
 	return positions;
 }
+
+/*
+void Solver::calculateDensity()
+{
+	float simRadius = 3.0f;
+	std::vector<float>  densities;
+
+	for (Particle* part : particles)
+	{
+		part->density = 0.0f;
+		for (Particle* other : particles) 
+		{
+			if (part == other)
+				continue;
+			float dist = part->pos.distance(other->pos);
+			part->density += kernel(simRadius, dist) + other->mass;
+		}
+	}
+}
+
+float kernel(float radius, float dist)
+{
+	float volume = M_PI * pow(radius, 8) / 4;
+	float value = std::max(0.f, radius * radius - dist * dist);
+	return value * value * value / volume;
+}
+*/

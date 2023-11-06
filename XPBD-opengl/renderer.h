@@ -12,7 +12,8 @@ public:
 	void render(bool clear);
 	void setInstanceData(std::vector<float>* buffer);
 
-	float VIEW_WIDTH = 1.2f * 16.f, VIEW_HEIGHT = 1.2f * 9.f;
+	float ZOOM = 3.5;
+	float VIEW_WIDTH = ZOOM * 16.f, VIEW_HEIGHT = ZOOM * 9.f;
 
 private:
 	int fanCount = 50;

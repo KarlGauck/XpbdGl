@@ -10,12 +10,16 @@ class SpatialHashGrid
 public:
 	SpatialHashGrid();
 
-	void updateParticles(std::vector<Particle*> &particles);
+	void updateParticles(std::vector<Particle>& globalParticles);
 
-	std::vector<Particle*> getParticles(Vec2 pos);
+	std::vector<int> getParticles(Vec2 pos);
+	std::vector<int> resultParticles();
 private:
-	int buckets[1000];
-	std::vector<Particle*> particlePtrs;
+	const static int PARTICLE_COUNT_RESERVE = 10000;
+
+	int buckets[100];
+	std::vector<int> particles;
+	int runningIndex;
 
 	int hash(Vec2 pos);
 };

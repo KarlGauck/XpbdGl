@@ -13,8 +13,8 @@ MaxPositionConstraint MaxPositionConstraint::constraints[ConstraintCountMax];
 MaxPositionConstraint::MaxPositionConstraint() {};
 
 MaxPositionConstraint::MaxPositionConstraint
-(Particle* particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin) :
-	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin), compliance(0.00001f)
+(int particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin) :
+	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin), compliance(0.001f)
 {
 	for (int i = 0; i < ParticleCountMax; i++)
 	{
@@ -23,7 +23,7 @@ MaxPositionConstraint::MaxPositionConstraint
 	}
 };
 
-void MaxPositionConstraint::add(Particle* particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin)
+void MaxPositionConstraint::add(int particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin)
 {
 	if (currentIndex >= ConstraintCountMax)
 		return;
@@ -31,24 +31,23 @@ void MaxPositionConstraint::add(Particle* particles[ParticleCountMax], float xMa
 	currentIndex++;
 }
 
-void MaxPositionConstraint::solve(float dt)
+void MaxPositionConstraint::solve(std::vector<Particle>& globalParticles, float dt)
 {
-	std::cout << currentIndex << std::endl;
 	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
 	{
 		// Calculate Gradients
 		MaxPositionConstraint& constraint = constraints[constraintIndex];
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
-			constraint.gradient[particleIndex] = constraint.calculateGradient(*constraint.particles[particleIndex]);
+			constraint.gradient[particleIndex] = constraint.calculateGradient(globalParticles[constraint.particles[particleIndex]]);
 
 		// Calculate Error
-		constraint.calculateError();
+		constraint.calculateError(globalParticles);
 
 		// Calculate Lamba
 		float weightedMass = 0.f;
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
 		{
-			Particle& particle = *constraint.particles[particleIndex];
+			Particle& particle = globalParticles[constraint.particles[particleIndex]];
 			Vec2 grad = constraint.gradient[particleIndex];
 			weightedMass += (1/particle.mass) * grad.dot(grad);
 		}
@@ -56,7 +55,7 @@ void MaxPositionConstraint::solve(float dt)
 
 		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
 		{
-			Particle& particle = *constraint.particles[particleIndex];
+			Particle& particle = globalParticles[constraint.particles[particleIndex]];
 			Vec2 deltaPos = constraint.gradient[particleIndex] * constraint.lambda * (1/particle.mass);
 			particle.oldPos = particle.pos;
 			particle.pos += deltaPos;
@@ -65,9 +64,9 @@ void MaxPositionConstraint::solve(float dt)
 
 }
 
-void MaxPositionConstraint::calculateError()
+void MaxPositionConstraint::calculateError(std::vector<Particle>& globalParticles)
 {
-	Particle& particle = *particles[0];
+	Particle& particle = globalParticles[particles[0]];
 	float capX = particle.pos.x;
 	float capY = particle.pos.y;
 	if (particle.pos.x > xMax)

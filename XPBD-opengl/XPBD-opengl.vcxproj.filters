@@ -87,6 +87,12 @@
     <ClCompile Include="collisionconstrainthandler.cpp">
       <Filter>Source Files\Physics\DynamicConstraintHandlers</Filter>
     </ClCompile>
+    <ClCompile Include="densityconstraint.cpp">
+      <Filter>Source Files\Physics\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="profiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -124,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="collisionconstrainthandler.h">
       <Filter>Header Files\Physics\DynamicConstraintHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="densityconstraint.h">
+      <Filter>Header Files\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="profiler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

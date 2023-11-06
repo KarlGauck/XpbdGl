@@ -7,5 +7,5 @@
 class ConstraintManager
 {
 public:
-	static void solveConstraints(std::vector<Particle*>& particles, float dt);
+	static void solveConstraints(std::vector<Particle>& particles, float dt);
 };

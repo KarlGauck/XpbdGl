@@ -1,40 +1,68 @@
 #include "collisionconstrainthandler.h"
 #include "collisionconstraint.h"
 #include "spatialhashgrid.h"
+#include <chrono>
+#include <iostream>
+#include <numeric>
 
 SpatialHashGrid CollisionConstraintHandler::grid;
+std::vector<int> CollisionConstraintHandler::processedParticles;
+std::vector<int> CollisionConstraintHandler::returnParticles;
+std::vector<int> CollisionConstraintHandler::neighbourParticles;
 
-void CollisionConstraintHandler::updateConstraints(std::vector<Particle*> particles)
+void CollisionConstraintHandler::updateConstraints(std::vector<Particle>& globalParticles)
 {
 	CollisionConstraint::clear();
-	grid.updateParticles(particles);
 
-	std::vector<Particle*> processedParticles;
-	for (Particle* particle : particles)
+	/*
+	for (int i = 0; i < globalParticles.size(); i++)
 	{
-		std::vector<Particle*> neighbourParticles;
+		for (int j = 0; j < globalParticles.size(); j++)
+		{
+			if (i == j)
+				continue;
+			int vec[2] = { i, j };
+			CollisionConstraint::add(vec);
+		} 
+	}
+	return;
+	*/
+
+	grid.updateParticles(globalParticles);
+	
+	int constraintCount = 0;
+	
+	processedParticles.clear();
+
+	for (int particleIndex = 0; particleIndex < globalParticles.size(); particleIndex++)
+	{
+		Particle& particle = globalParticles[particleIndex];
+		neighbourParticles.clear();
 		for (int dx = -1; dx <= 1; dx++)
 			for (int dy = -1; dy <= 1; dy++)
 			{
-				Vec2 checkPos = particle->pos + Vec2(dx, dy);
-				std::vector<Particle*> cellParticles = grid.getParticles(checkPos);
-				for (Particle* ptr : cellParticles) {
-					if (std::find(neighbourParticles.begin(), neighbourParticles.end(), ptr) != neighbourParticles.end())
+				Vec2 checkPos = particle.pos + Vec2(dx, dy);
+				std::vector<int> cellParticles = grid.getParticles(checkPos);
+
+				for (int particle : cellParticles) {
+					if (std::find(neighbourParticles.begin(), neighbourParticles.end(), particle) != neighbourParticles.end())
 						continue;
-					neighbourParticles.push_back(ptr);
+					neighbourParticles.push_back(particle);
 				}
 			}
 
-		for (Particle* cellParticle : neighbourParticles)
+		for (int cellParticle : neighbourParticles)
 		{
-			if (cellParticle == particle)
+			if (cellParticle == particleIndex)
 				continue;
-			if (std::find(processedParticles.begin(), processedParticles.end(), cellParticle) != processedParticles.end())
-				continue;
+			for (int i = 0; i < processedParticles.size(); i++)
+				if (processedParticles[i] == cellParticle)
+					;// continue;
 			
-			Particle* constraintParticles[2] = { particle, cellParticle };
+			int constraintParticles[2] = { particleIndex, cellParticle };
 			CollisionConstraint::add(constraintParticles);
+			constraintCount++;
 		}
-		processedParticles.push_back(particle);
+		processedParticles.push_back(particleIndex);
 	}
 }

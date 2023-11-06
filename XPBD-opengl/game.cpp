@@ -34,12 +34,14 @@ void Game::startLoop() {
 		circleRenderer.setInstanceData(&positions);
 		circleRenderer.render(true);
 
+		float width = 100.f;
+		float height = 50.0f;
 		std::vector<float> rectPositions =
 		{
-			0.0f, -8.5f, 32.0f, 1.0f, 0.0f,
-			0.0f, 8.5f, 32.0f, 1.0f, 0.0f,
-			-15.5f, 0.0f, 1.0f, 18.0f, 0.0f,
-			15.5f, 0.0f, 1.0f, 18.0f, 0.0f
+			0.0f, -(height/2) - .5f, width, 1.0f, 0.0f,
+			0.0f, (height/2) + .5f, width, 1.0f, 0.0f,
+			-(width/2) - .5f, 0.0f, 1.0f, height, 0.0f,
+			(width/2) + .5f, 0.0f, 1.0f, height, 0.0f
 		};
 		rectangleRenderer.setInstanceData(&rectPositions);
 		rectangleRenderer.render(false);
@@ -48,7 +50,7 @@ void Game::startLoop() {
 
 		auto end = std::chrono::high_resolution_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-		std::cout << 1000.f/duration.count() << " FPS" << std::endl;
+		//std::cout << 1000.f/duration.count() << " FPS" << std::endl;
 	}
 }
 
@@ -106,8 +108,14 @@ void Game::handleEvents() {
 			SDL_GetMouseState(&x, &y);
 			float yOffset = (float)(SCREEN_HEIGHT / 2);
 			float xOffset = (float)(SCREEN_WIDTH / 2);
-			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
+
+			//solver.addSoftBody(Vec2((x - xOffset) * (2 * VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * VIEW_HEIGHT / SCREEN_HEIGHT))));
+
+			for (float dx = -10; dx <= 10; dx += 5)
+				for (float dy = -10; dy <= 10; dy += 5)
+					solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH) + dx, -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT)) + dy));
 		}
+
 		/*
 		if (e.type == SDL_MOUSEMOTION)
 		{
@@ -118,5 +126,6 @@ void Game::handleEvents() {
 			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
 		}
 		*/
+		
 	}
 }
