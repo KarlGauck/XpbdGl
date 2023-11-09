@@ -1,91 +1,136 @@
+#include <SDL.h>
+
 #include <vector>
 #include <iostream>
+#include <chrono>
 
-#include "collisionconstraint.h"
-#include "particle.h"
-#include "Vec2.h"
+#include "game.h"
+#include "renderer.h"
 #include "profiler.h"
 
-static Profiler profiler("Collision Solver", 1000);
-
-int CollisionConstraint::currentIndex = 0;
-CollisionConstraint CollisionConstraint::constraints[ConstraintCountMax];
-
-CollisionConstraint::CollisionConstraint() {};
-
-CollisionConstraint::CollisionConstraint(int particles[ParticleCountMax]): compliance(0.0f)
+Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
+	window(window), SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT) 
 {
-	for (int i = 0; i < ParticleCountMax; i++)
-	{
-		this->particles[i] = particles[i];
-	}
-};
+	setupRenderers();
 
-void CollisionConstraint::add(int particles[ParticleCountMax])
-{
-	if (currentIndex >= ConstraintCountMax)
-		return;
-	constraints[currentIndex] = CollisionConstraint(particles);
-	currentIndex++;
+	float VIEW_SCALE = 1.2f;
+	
+	this->solver = Solver();
+	quit = false;
 }
 
-void CollisionConstraint::solve(std::vector<Particle>& globalParticles, float dt)
-{
-	profiler.start();
+static float rot = 0.0f;
 
-	for (int constraintIndex = 0; constraintIndex < currentIndex; constraintIndex++)
-	{
-		// Calculate Gradients
-		CollisionConstraint& constraint = constraints[constraintIndex];
-		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
-			constraint.gradient[particleIndex] = constraint.calculateGradient(globalParticles, globalParticles[constraint.particles[particleIndex]]);
+static Profiler pr("Profiler", 100);
 
-		// Calculate Error
-		constraint.calculateError(globalParticles);
+void Game::startLoop() {
+	
+	std::vector<float> positions;
+	while (!quit) {
+		pr.start();
 
-		// Calculate Lamba
-		float weightedMass = 0.f;
-		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
+		handleEvents();
+
+		float dt = 0.03;//pr.duration * 0.000000001f;
+		solver.solve(dt);
+
+		positions = solver.getPositions();
+		circleRenderer.setInstanceData(&positions);
+		circleRenderer.render(true);
+
+		float width = 100.f;
+		float height = 50.0f;
+
+		//rot += 0.2;
+
+		std::vector<float> rectPositions =
 		{
-			Particle& particle = globalParticles[constraint.particles[particleIndex]];
-			Vec2 grad = constraint.gradient[particleIndex];
-			weightedMass += (1/particle.mass) * grad.dot(grad);
-		}
-		constraint.lambda = -constraint.error / (weightedMass + (constraint.compliance/(float)pow(dt, 2)));
+			0.0f, -(height/2) - .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f,
+			0.0f, (height/2) + .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
+			-(width/2) - .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
+			(width/2) + .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f
+		};
+		rectangleRenderer.setInstanceData(&rectPositions);
+		rectangleRenderer.render(false);
 
-		for (int particleIndex = 0; particleIndex < ParticleCountMax; particleIndex++)
-		{
-			Particle& particle = globalParticles[constraint.particles[particleIndex]];
-			Vec2 deltaPos = constraint.gradient[particleIndex] * constraint.lambda * (1/particle.mass);
-			particle.oldPos = particle.pos;
-			particle.pos += deltaPos;
-		}
+		SDL_GL_SwapWindow(window);
+		pr.end();
 	}
-	//profiler.end();
+}
+
+void Game::setupRenderers()
+{
+	// Circle Renderer
+	int fanCount = 50;
+	std::vector<float> vertexData;
+	vertexData.push_back(0.0f);
+	vertexData.push_back(0.0f);
+
+	for (int i = 0; i < fanCount; i++) {
+		float angle = (float)(2 * M_PI / fanCount) * i;
+		float x = cos(angle) / 2;
+		float y = sin(angle) / 2;
+		vertexData.push_back(x);
+		vertexData.push_back(y);
+	}
+
+	std::vector<unsigned int> indexData;
+	for (int i = 0; i < fanCount; i++) {
+		std::cout << 0 << "  :  " << ((i % fanCount) + 1) << "  :  " << ((i + 1) % fanCount) + 1 << std::endl;
+		indexData.push_back(0);
+		indexData.push_back((i%fanCount) + 1);
+		indexData.push_back(((i+1)%fanCount) + 1);
+	}
+
+	this->circleRenderer = Renderer(vertexData, indexData, "vertexShader.glsl", "fragmentShader.glsl");
+
+	// Rectangle Renderer
+	vertexData =
+	{
+		-0.5f, 0.5f,
+		-0.5f, -0.5f,
+		0.5f, -0.5f,
+		0.5f, 0.5f
+	};
+	indexData = 
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+	this->rectangleRenderer = Renderer(vertexData, indexData, "vertexShader.glsl", "fragmentShader.glsl");
 
 }
 
-Vec2 CollisionConstraint::calculateGradient(std::vector<Particle>& globalParticles, Particle& particle)
-{
-	Particle* other = nullptr;
-	if (&globalParticles[particles[0]] == &particle)
-		other = &globalParticles[particles[1]];
-	else other = &globalParticles[particles[0]];
-	//Vec2 temp = other->pos - particle.pos;
-	//return Vec2(pow(temp.x, 2.0f), pow(temp.y, 2.0f));
-	return (other->pos - particle.pos).normalized() * 20;
-}
+void Game::handleEvents() {
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_QUIT)
+			quit = true;
+		if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			float yOffset = (float)(SCREEN_HEIGHT / 2);
+			float xOffset = (float)(SCREEN_WIDTH / 2);
 
-void CollisionConstraint::calculateError(std::vector<Particle>& globalParticles)
-{
-	float distance = globalParticles[particles[0]].pos.distance(globalParticles[particles[1]].pos);
-	float wantedDistance = globalParticles[particles[0]].radius + globalParticles[particles[1]].radius;
-	if (distance < wantedDistance)
-		error = wantedDistance-distance;
-	else error = 0;
-}
+			//solver.addParticle(Vec2((x - xOffset) * (2 * VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * VIEW_HEIGHT / SCREEN_HEIGHT))));
 
-void CollisionConstraint::clear()
-{
-	currentIndex = 0;
+			for (float dx = -10; dx <= 10; dx += 2)
+				for (float dy = -10; dy <= 10; dy += 2)
+					solver.addParticle(Vec2((x - xOffset) * (2*circleRenderer.VIEW_WIDTH/SCREEN_WIDTH) + dx, -((y - yOffset) * (2*circleRenderer.VIEW_HEIGHT/SCREEN_HEIGHT)) + dy),
+						Vec2(0.0f, 0.0f));
+		}
+
+		/*
+		if (e.type == SDL_MOUSEMOTION)
+		{
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			float yOffset = (float)(SCREEN_HEIGHT / 2);
+			float xOffset = (float)(SCREEN_WIDTH / 2);
+			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
+		}
+		*/
+		
+	}
 }

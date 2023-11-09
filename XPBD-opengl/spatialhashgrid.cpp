@@ -53,10 +53,10 @@ void SpatialHashGrid::updateParticles(std::vector<Particle>& globalParticles)
 
 int SpatialHashGrid::hash(Vec2 pos) 
 {
-	float cellSize = 5 * 2;
+	float cellSize = 0.5 * 2;
 	int bucketCount = (sizeof(buckets) / sizeof(int));
-	int x = (int)(pos.x/cellSize);
-	int y = (int)(pos.y/cellSize);
+	int x = (int)floor(pos.x/cellSize);
+	int y = (int)floor(pos.y/cellSize);
 	int h = (x * 92837111) ^ (y * 689287499);
 	return abs(h) % (bucketCount - 1);
 }

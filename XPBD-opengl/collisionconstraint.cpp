@@ -65,6 +65,23 @@ void CollisionConstraint::solve(std::vector<Particle>& globalParticles, float dt
 
 }
 
+static float q_rsqrt(float number)
+{
+	long i;
+	float x2, y;
+	const float threehalfs = 1.5F;
+
+	x2 = number * 0.5F;
+	y = number;
+	i = *(long*)&y;                       // evil floating point bit level hacking
+	i = 0x5f3759df - (i >> 1);               // what the fuck?
+	y = *(float*)&i;
+	y = y * (threehalfs - (x2 * y * y));   // 1st iteration
+	// y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+	return y;
+}
+
 Vec2 CollisionConstraint::calculateGradient(std::vector<Particle>& globalParticles, Particle& particle)
 {
 	Particle* other = nullptr;
@@ -73,12 +90,18 @@ Vec2 CollisionConstraint::calculateGradient(std::vector<Particle>& globalParticl
 	else other = &globalParticles[particles[0]];
 	//Vec2 temp = other->pos - particle.pos;
 	//return Vec2(pow(temp.x, 2.0f), pow(temp.y, 2.0f));
-	return (other->pos - particle.pos).normalized();
+	float dx = other->pos.x - particle.pos.x;
+	float dy = other->pos.y - particle.pos.y;
+	float len = dx*dx + dy*dy;
+	return (other->pos - particle.pos) * (1 / sqrt(len));// q_rsqrt(len);
 }
 
 void CollisionConstraint::calculateError(std::vector<Particle>& globalParticles)
 {
-	float distance = globalParticles[particles[0]].pos.distance(globalParticles[particles[1]].pos);
+	float dx = globalParticles[particles[0]].pos.x - globalParticles[particles[1]].pos.x;
+	float dy = globalParticles[particles[0]].pos.y - globalParticles[particles[1]].pos.y;
+	float distance = dx * dx + dy * dy;
+	distance *= (1 / sqrt(distance));// q_rsqrt(distance);
 	float wantedDistance = globalParticles[particles[0]].radius + globalParticles[particles[1]].radius;
 	if (distance < wantedDistance)
 		error = wantedDistance-distance;
@@ -89,3 +112,5 @@ void CollisionConstraint::clear()
 {
 	currentIndex = 0;
 }
+
+

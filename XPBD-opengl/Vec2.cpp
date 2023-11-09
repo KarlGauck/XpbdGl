@@ -63,7 +63,9 @@ float Vec2::dot(const Vec2& other)
 
 float Vec2::distance(const Vec2& other)
 {
-	return (float) sqrt(pow(x-other.x, 2) + pow(y-other.y, 2));
+	float dx = x - other.x;
+	float dy = y - other.y;
+	return (float) sqrt(dx*dx + dy*dy);
 }
 
 void Vec2::normalize()

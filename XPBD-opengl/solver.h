@@ -10,8 +10,8 @@
 class Solver {
 public:
 	Solver();
-	void solve();
-	void addParticle(Vec2 pos);
+	void solve(float dt);
+	void addParticle(Vec2 pos, Vec2 vel);
 
 	void addSoftBody(Vec2 pos);
 

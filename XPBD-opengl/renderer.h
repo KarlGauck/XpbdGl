@@ -15,7 +15,9 @@ public:
 	float ZOOM = 3.5;
 	float VIEW_WIDTH = ZOOM * 16.f, VIEW_HEIGHT = ZOOM * 9.f;
 
+
 private:
+	static const int INSTANCE_BUFFER_SIZE = 10;
 	int fanCount = 50;
 
 	unsigned int instanceCount;

@@ -6,6 +6,7 @@
 
 #include "game.h"
 #include "renderer.h"
+#include "profiler.h"
 
 Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
 	window(window), SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT) 
@@ -13,22 +14,25 @@ Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
 	setupRenderers();
 
 	float VIEW_SCALE = 1.2f;
-	VIEW_WIDTH = VIEW_SCALE * 16.f;
-	VIEW_HEIGHT = VIEW_SCALE * 9.f;
 	
 	this->solver = Solver();
 	quit = false;
 }
 
+static float rot = 0.0f;
+
+static Profiler pr("Profiler", 100);
+
 void Game::startLoop() {
 	
 	std::vector<float> positions;
 	while (!quit) {
-		auto start = std::chrono::high_resolution_clock::now();
+		pr.start();
 
 		handleEvents();
 
-		solver.solve();
+		float dt = pr.duration * 0.000000001f;
+		solver.solve(dt);
 
 		positions = solver.getPositions();
 		circleRenderer.setInstanceData(&positions);
@@ -36,21 +40,21 @@ void Game::startLoop() {
 
 		float width = 100.f;
 		float height = 50.0f;
+
+		//rot += 0.2;
+
 		std::vector<float> rectPositions =
 		{
-			0.0f, -(height/2) - .5f, width, 1.0f, 0.0f,
-			0.0f, (height/2) + .5f, width, 1.0f, 0.0f,
-			-(width/2) - .5f, 0.0f, 1.0f, height, 0.0f,
-			(width/2) + .5f, 0.0f, 1.0f, height, 0.0f
+			0.0f, -(height/2) - .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f,
+			0.0f, (height/2) + .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
+			-(width/2) - .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
+			(width/2) + .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f
 		};
 		rectangleRenderer.setInstanceData(&rectPositions);
 		rectangleRenderer.render(false);
 
 		SDL_GL_SwapWindow(window);
-
-		auto end = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-		//std::cout << 1000.f/duration.count() << " FPS" << std::endl;
+		pr.end();
 	}
 }
 
@@ -109,11 +113,12 @@ void Game::handleEvents() {
 			float yOffset = (float)(SCREEN_HEIGHT / 2);
 			float xOffset = (float)(SCREEN_WIDTH / 2);
 
-			//solver.addSoftBody(Vec2((x - xOffset) * (2 * VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * VIEW_HEIGHT / SCREEN_HEIGHT))));
+			//solver.addParticle(Vec2((x - xOffset) * (2 * VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * VIEW_HEIGHT / SCREEN_HEIGHT))));
 
-			for (float dx = -10; dx <= 10; dx += 5)
-				for (float dy = -10; dy <= 10; dy += 5)
-					solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH) + dx, -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT)) + dy));
+			for (float dx = -10; dx <= 10; dx += 2)
+				for (float dy = -10; dy <= 10; dy += 2)
+					solver.addParticle(Vec2((x - xOffset) * (2*circleRenderer.VIEW_WIDTH/SCREEN_WIDTH) + dx, -((y - yOffset) * (2*circleRenderer.VIEW_HEIGHT/SCREEN_HEIGHT)) + dy),
+						Vec2(0.0f, 0.0f));
 		}
 
 		/*

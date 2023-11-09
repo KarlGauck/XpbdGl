@@ -14,7 +14,7 @@ MaxPositionConstraint::MaxPositionConstraint() {};
 
 MaxPositionConstraint::MaxPositionConstraint
 (int particles[ParticleCountMax], float xMax, float yMax, float xMin, float yMin) :
-	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin), compliance(0.001f)
+	xMax(xMax), yMax(yMax), xMin(xMin), yMin(yMin), compliance(0.0005f)
 {
 	for (int i = 0; i < ParticleCountMax; i++)
 	{

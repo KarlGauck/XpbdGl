@@ -15,9 +15,7 @@
 #include "constraintmanager.h"
 #include "profiler.h"
 
-# define M_PI           3.14159265358979323846
-
-static Profiler pr("Profiler", 100);
+# define M_PI 3.14159265358979323846
 
 Solver::Solver() {
 	int MAX_PARTIClES = 10000;
@@ -25,25 +23,30 @@ Solver::Solver() {
 	oldPositions.reserve(MAX_PARTIClES);
 }
 
-void Solver::solve() 
-{
-	pr.start();
-	float dtUncorrected = 0.03; // pr.duration * 0.000000015f;
+static int count = 0;
 
-	float substepNumber = 40;
-	for (int substep = 0; substep < substepNumber; substep++) {
-		float dt = dtUncorrected / substepNumber;
+void Solver::solve(float deltaTime) 
+{
+
+	count = (count + 1) % 5;
+	if (count == 0)
+		addParticle(Vec2(-45, 20), Vec2(20.0f, -20.f));
+	float substepNumber = 1;
+	for (int substep = 0; substep < substepNumber; substep++) 
+	{
+		float dt = deltaTime / substepNumber;
 		oldPositions.clear();
 
 		Vec2 gravityAccel(0.f, 9.81f);
 
-		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) {
+		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) 
+		{
 			Particle& particle = particles[particleIndex];
 
 			oldPositions.push_back(particle.pos);
 
 			particle.vel -= gravityAccel * dt;
-			particle.pos += particle.vel * dt;
+			particle.pos += particle.vel * dt + gravityAccel * dt * dt * .5f;
 		}
 
 		ConstraintManager::solveConstraints(particles, dt);
@@ -55,7 +58,6 @@ void Solver::solve()
 			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
 		}
 	}
-	pr.end();
 }
 
 void Solver::addSoftBody(Vec2 pos)
@@ -67,7 +69,7 @@ void Solver::addSoftBody(Vec2 pos)
 	{
 		for (int y = -height/2; y <= height/2; y++)
 		{
-			addParticle(pos + Vec2(x * gap, y * gap));
+			addParticle(pos + Vec2(x * gap, y * gap), Vec2(0.0f, 0.0f));
 			int index = particles.size() - 1;
 
 
@@ -97,14 +99,21 @@ void Solver::addSoftBody(Vec2 pos)
 	}
 }
 
-void Solver::addParticle(Vec2 pos)
+void Solver::addParticle(Vec2 pos, Vec2 vel)
 {
+	float color[] = {
+		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
+		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
+		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
+		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX)
+	};
 	particles.push_back(
 		Particle(
 			1.0f,
-			1.0f,
+			0.5f,
 			pos,
-			Vec2(0.0f, 0.0f)
+			vel,
+			color
 		)
 	);
 
@@ -134,12 +143,17 @@ std::vector<float> Solver::getPositions()
 {
 	std::vector<float> positions;
 	for (Particle& particle : particles) {
+
 		positions.push_back(particle.pos.x);
 		positions.push_back(particle.pos.y);
 
-		positions.push_back(1.0f);
+		positions.push_back(particle.radius * 2);
+		positions.push_back(particle.radius * 2);
 		positions.push_back(1.0f);
 		positions.push_back(0.0f);
+
+		for (int i = 0; i < 4; i++)
+			positions.push_back(particle.color[i]);
 	}
 	return positions;
 }

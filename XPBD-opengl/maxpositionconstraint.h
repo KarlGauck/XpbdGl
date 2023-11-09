@@ -8,7 +8,7 @@
 class MaxPositionConstraint
 {
 public:
-	const static int ConstraintCountMax = 100000;
+	const static int ConstraintCountMax = 1000000;
 	static MaxPositionConstraint constraints[ConstraintCountMax];
 
 	const static int ParticleCountMax = 1;

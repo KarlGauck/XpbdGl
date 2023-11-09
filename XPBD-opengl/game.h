@@ -11,7 +11,6 @@ public:
 
 	void startLoop();
 private:
-	float VIEW_WIDTH, VIEW_HEIGHT;
 	int SCREEN_WIDTH, SCREEN_HEIGHT;
 	bool quit;
 

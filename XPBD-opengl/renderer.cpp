@@ -46,7 +46,7 @@ void Renderer::render(bool clear)
 
 void Renderer::setInstanceData(std::vector<float> *buffer) 
 {
-	instanceCount = buffer->size() / 5;
+	instanceCount = buffer->size() / INSTANCE_BUFFER_SIZE;
 	instanceData = buffer;
 }
 
@@ -136,7 +136,7 @@ void Renderer::setupVAOs()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, circleVertexStride, 0);
 	glEnableVertexAttribArray(0);
 
-	int circleInstanceVertexStride = 5 * sizeof(float);
+	int circleInstanceVertexStride = INSTANCE_BUFFER_SIZE * sizeof(float);
 	glBindBuffer(GL_ARRAY_BUFFER, circleInstanceVBO);
 
 	// Offset
@@ -149,10 +149,15 @@ void Renderer::setupVAOs()
 	glVertexAttribDivisor(2, 1);
 	glEnableVertexAttribArray(2);
 
-	// Rotatiton
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, circleInstanceVertexStride, (void*)(4*sizeof(float)));
+	// Rotatiton (Complex Number)
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, circleInstanceVertexStride, (void*)(4*sizeof(float)));
 	glVertexAttribDivisor(3, 1);
 	glEnableVertexAttribArray(3);
+
+	// Color
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, circleInstanceVertexStride, (void*)(6 * sizeof(float)));
+	glVertexAttribDivisor(4, 1);
+	glEnableVertexAttribArray(4);
 
 	glUseProgram(program);
 
@@ -187,7 +192,7 @@ void Renderer::pushInstanceData()
 	glBindVertexArray(circleVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, circleInstanceVBO);
-	glBufferData(GL_ARRAY_BUFFER, instanceCount * 5 * sizeof(float), instanceData->data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, instanceCount * INSTANCE_BUFFER_SIZE * sizeof(float), instanceData->data(), GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(0);
 }
