@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "instanceData.h"
+
 class Renderer {
 public:
 	Renderer();
@@ -10,7 +12,7 @@ public:
 		std::string vertexShaderPath, std::string fragmentShaderPath);
 
 	void render(bool clear);
-	void setInstanceData(std::vector<float>* buffer);
+	void setInstanceData(std::vector<InstanceData>* buffer);
 
 	float ZOOM = 3.5;
 	float VIEW_WIDTH = ZOOM * 16.f, VIEW_HEIGHT = ZOOM * 9.f;
@@ -21,7 +23,7 @@ private:
 	int fanCount = 50;
 
 	unsigned int instanceCount;
-	std::vector<float>* instanceData;
+	std::vector<InstanceData>* instanceData;
 
 	std::vector<float> vertexData;
 	std::vector<unsigned int> indexData;

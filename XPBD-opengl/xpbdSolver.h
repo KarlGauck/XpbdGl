@@ -1,0 +1,30 @@
+#pragma once
+
+#include <vector>
+#include <map>
+#include <tuple>
+
+#include "solver.h"
+
+#include "Vec2.h"
+#include "particle.h"
+
+class XpbdSolver : public Solver{
+public:
+	XpbdSolver();
+	void solve(float dt) override;
+	void addParticle(Vec2 pos, Vec2 vel) override;
+
+	void addSoftBody(Vec2 pos);
+
+	std::vector<InstanceData> getCircleData() override;
+
+	std::vector<Particle> particles;
+private:
+	std::vector<Vec2> oldPositions;
+
+	void moveParticles(float dt);
+};
+
+
+

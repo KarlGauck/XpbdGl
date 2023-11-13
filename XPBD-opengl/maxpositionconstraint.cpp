@@ -18,7 +18,6 @@ MaxPositionConstraint::MaxPositionConstraint
 {
 	for (int i = 0; i < ParticleCountMax; i++)
 	{
-		std::cout << "Set: " << particles[i] << std::endl;
 		this->particles[i] = particles[i];
 	}
 };

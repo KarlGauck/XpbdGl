@@ -1,29 +1,19 @@
 #pragma once
 
 #include <vector>
-#include <map>
-#include <tuple>
+#include "instanceData.h"
 
-#include "Vec2.h"
-#include "particle.h"
-
-class Solver {
+class Solver 
+{
 public:
-	Solver();
-	void solve(float dt);
-	void addParticle(Vec2 pos, Vec2 vel);
 
-	void addSoftBody(Vec2 pos);
+	virtual std::vector<InstanceData> getCircleData()
+	{
+		return {};
+	}
 
-	std::vector<float> getPositions();
-	void calculateDensity();
+	virtual void solve(float dt) = 0;
 
-	std::vector<Particle> particles;
-private:
-	std::vector<Vec2> oldPositions;
+	virtual void addParticle(Vec2 pos, Vec2 vel) = 0;
 
-	void moveParticles(float dt);
 };
-
-
-

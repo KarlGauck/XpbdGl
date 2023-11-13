@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "instanceData.h"
 #include "renderer.h"
 
 
@@ -44,9 +45,9 @@ void Renderer::render(bool clear)
 	glBindVertexArray(0);
 }
 
-void Renderer::setInstanceData(std::vector<float> *buffer) 
+void Renderer::setInstanceData(std::vector<InstanceData> *buffer) 
 {
-	instanceCount = buffer->size() / INSTANCE_BUFFER_SIZE;
+	instanceCount = buffer->size();// / INSTANCE_BUFFER_SIZE;
 	instanceData = buffer;
 }
 

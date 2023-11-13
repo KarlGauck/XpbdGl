@@ -25,23 +25,50 @@
     <Filter Include="Header Files\Physics\Math">
       <UniqueIdentifier>{dab4042e-62ca-4943-b493-755c07d1778e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Physics\Constraints">
-      <UniqueIdentifier>{23bef619-f2ab-4e78-a4b2-dae2a8ee038a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{b819eb11-128f-45f0-bb6c-95ea74af6057}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Physics\Constraints">
-      <UniqueIdentifier>{bae410ef-45a6-4b2d-aeb2-c17cf3670db3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{6fdf6398-e020-42a4-a521-9e1b1d9ddfb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\DynamicConstraintHandlers">
+    <Filter Include="Source Files\imgui">
+      <UniqueIdentifier>{fe8f3d58-38be-414d-a32a-ff95787c5c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{6e3baf2a-df39-47b9-aead-a636ede99908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{8472e50e-f178-44cd-beb6-e4f0ac58cc3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Solver">
+      <UniqueIdentifier>{e1503460-1951-4436-9805-2bca7dfb0db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Solver\XPBD">
+      <UniqueIdentifier>{ce1c7f0d-0401-4839-95d1-b7f4f5d3f797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Solver\XPBD\Constraints">
+      <UniqueIdentifier>{bae410ef-45a6-4b2d-aeb2-c17cf3670db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Solver\XPBD\DynamicConstraintHandlers">
       <UniqueIdentifier>{d387565c-9999-4c90-a73c-aaff6dd2a5b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Physics\DynamicConstraintHandlers">
+    <Filter Include="Header Files\Physics\Solver\Verlet">
+      <UniqueIdentifier>{f21db7eb-3c4f-447b-9813-adb92e609bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Solver">
+      <UniqueIdentifier>{41b13850-68d4-4b21-9284-9ab39130a55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Solver\XPBD">
+      <UniqueIdentifier>{b8d04b58-9855-472b-a82d-f7e22a1b2da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Solver\XPBD\DynamicConstraintHandlers">
       <UniqueIdentifier>{1e638cea-8d4a-44f6-a7b5-a2933f49cb3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Solver\XPBD\Constraints">
+      <UniqueIdentifier>{23bef619-f2ab-4e78-a4b2-dae2a8ee038a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Solver\Verlet">
+      <UniqueIdentifier>{3fde78c7-a3d7-4edb-ad25-fae552466fe2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +81,6 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="solver.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Vec2.h">
       <Filter>Header Files\Physics\Math</Filter>
     </ClCompile>
@@ -64,7 +88,7 @@
       <Filter>Source Files\Physics\Math</Filter>
     </ClCompile>
     <ClCompile Include="distanceconstraint.cpp">
-      <Filter>Source Files\Physics\Constraints</Filter>
+      <Filter>Source Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>Source Files\Physics</Filter>
@@ -73,10 +97,10 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="maxpositionconstraint.cpp">
-      <Filter>Source Files\Physics\Constraints</Filter>
+      <Filter>Source Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClCompile>
     <ClCompile Include="collisionconstraint.cpp">
-      <Filter>Source Files\Physics\Constraints</Filter>
+      <Filter>Source Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClCompile>
     <ClCompile Include="spatialhashgrid.cpp">
       <Filter>Source Files\Physics</Filter>
@@ -85,13 +109,55 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="collisionconstrainthandler.cpp">
-      <Filter>Source Files\Physics\DynamicConstraintHandlers</Filter>
+      <Filter>Source Files\Physics\Solver\XPBD\DynamicConstraintHandlers</Filter>
     </ClCompile>
     <ClCompile Include="densityconstraint.cpp">
-      <Filter>Source Files\Physics\Constraints</Filter>
+      <Filter>Source Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClCompile>
     <ClCompile Include="profiler.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_demo.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\backends\imgui_impl_sdl2.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="instanceData.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="xpbdBallScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="xpbdBallScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="xpbdSolver.cpp">
+      <Filter>Source Files\Physics\Solver\XPBD</Filter>
+    </ClCompile>
+    <ClCompile Include="verletSolver.cpp">
+      <Filter>Source Files\Physics\Solver\Verlet</Filter>
+    </ClCompile>
+    <ClCompile Include="verletScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,11 +167,8 @@
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="solver.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="distanceconstraint.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
+      <Filter>Header Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="particle.h">
       <Filter>Header Files\Physics</Filter>
@@ -117,25 +180,43 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="maxpositionconstraint.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
+      <Filter>Header Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="collisionconstraint.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
+      <Filter>Header Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="spatialhashgrid.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="constraintmanager.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="collisionconstrainthandler.h">
-      <Filter>Header Files\Physics\DynamicConstraintHandlers</Filter>
+      <Filter>Header Files\Physics\Solver\XPBD\DynamicConstraintHandlers</Filter>
     </ClInclude>
     <ClInclude Include="densityconstraint.h">
-      <Filter>Header Files\Physics\Constraints</Filter>
+      <Filter>Header Files\Physics\Solver\XPBD\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="profiler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="viewportData.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="solver.h">
+      <Filter>Header Files\Physics\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="xpbdSolver.h">
+      <Filter>Header Files\Physics\Solver\XPBD</Filter>
+    </ClInclude>
+    <ClInclude Include="verletSolver.h">
+      <Filter>Header Files\Physics\Solver\Verlet</Filter>
+    </ClInclude>
+    <ClInclude Include="constraintmanager.h">
+      <Filter>Header Files\Physics\Solver\XPBD</Filter>
+    </ClInclude>
+    <ClInclude Include="verletScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

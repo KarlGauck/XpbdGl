@@ -1660,3 +1660,87 @@ ERROR: No matching issuer found
 [1108/202006.857:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
 [1108/202006.872:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
 [1108/202006.905:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183913.582:WARNING:chrome_browser_cloud_management_controller.cc(87)] Could not create policy manager as CBCM is not enabled.
+[1110/183913.598:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183914.505:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183918.613:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183919.522:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183921.163:ERROR:cert_verify_proc_builtin.cc(677)] CertVerifyProcBuiltin for 127.0.0.1 failed:
+----- Certificate i=0 (CN=Emma) -----
+ERROR: No matching issuer found
+
+
+[1110/183921.167:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.765:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.778:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.789:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.807:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.820:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.831:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.843:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.867:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.879:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.894:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.910:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.933:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.945:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.956:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.968:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183921.979:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183923.641:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/183923.732:INFO:CONSOLE(1)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/zigzag.svg'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/vendor-626047.js (1)
+[1110/183923.770:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/no-connection-to-server.192x192.svg'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183923.771:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/no-connection-to-server.192x192.svg'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183923.772:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/no-connection-to-server.192x192.svg'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183928.621:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183929.536:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183930.175:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_Hotspots.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183930.176:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_UA.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183930.177:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_Mem.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183930.185:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_Threading.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183930.190:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_HPC.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183930.191:INFO:CONSOLE(0)] "Mixed Content: The page at 'https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713' was loaded over HTTPS, but requested an insecure element 'https://127.0.0.1:60379/assets/analysis_types/GSP_GO.png'. This request was not upgraded to HTTPS because its URL's host is an IP address.", source: https://127.0.0.1:60379/extension-ui/Session-1-1699637960855?passphrase=2f542e73-732c-f026-3c1f-e7efea5e8713 (0)
+[1110/183948.633:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/183949.545:WARNING:dns_config_service_win.cc(583)] Failed to read DnsConfig.
+[1110/184725.466:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/184725.466:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/184725.466:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/190146.092:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190146.095:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190146.108:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190146.111:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190146.114:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190348.747:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/190348.747:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/190348.747:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/190349.121:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190349.146:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190349.178:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190349.183:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/190349.196:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/192119.457:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/192119.457:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/192119.457:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/192119.465:ERROR:cert_verify_proc_builtin.cc(677)] CertVerifyProcBuiltin for 127.0.0.1 failed:
+----- Certificate i=0 (CN=Emma) -----
+ERROR: No matching issuer found
+
+
+[1110/192119.465:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/192119.465:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/192119.499:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/192119.524:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/192119.529:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/193453.660:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/193453.661:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/193453.661:INFO:CONSOLE(2)] "Failed to send log TypeError: Failed to fetch", source: https://127.0.0.1:60379/intel.analyzers.vtune.gui.js (2)
+[1110/195233.667:ERROR:cert_verify_proc_builtin.cc(677)] CertVerifyProcBuiltin for 127.0.0.1 failed:
+----- Certificate i=0 (CN=Emma) -----
+ERROR: No matching issuer found
+
+
+[1110/195233.669:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/195233.670:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/195233.698:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/195233.701:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202
+[1110/195233.706:ERROR:ssl_client_socket_impl.cc(992)] handshake failed; returned -1, SSL error code 1, net_error -202

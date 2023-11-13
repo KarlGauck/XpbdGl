@@ -3,7 +3,8 @@
 #include <SDL.h>
 
 #include "renderer.h"
-#include "solver.h"
+#include "xpbdSolver.h"
+#include "scene.h"
 
 class Game {
 public:
@@ -17,7 +18,8 @@ private:
 	SDL_Window* window;
 	Renderer circleRenderer;
 	Renderer rectangleRenderer;
-	Solver solver;
+	Solver* solver;
+	Scene* scene;
 		
 	void setupRenderers();
 	void handleEvents();

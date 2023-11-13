@@ -5,6 +5,10 @@
 #include <SDL.h>
 #include <glew.h>
 
+#include "imgui.h"
+#include "./backends/imgui_impl_sdl2.h"
+#include "./backends/imgui_impl_opengl3.h"
+
 #include "game.h"
 
 const int SCREEN_WIDTH = 160 * 7;
@@ -47,6 +51,14 @@ bool init() {
 		std::cout << "Unable to set VSync: " << SDL_GetError() << std::endl;
 	}
 
+
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	ImGui_ImplSDL2_InitForOpenGL(window, context);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
 	return true;
 }
 
@@ -57,6 +69,8 @@ int main(int argc, char* args[]) {
 
 	Game game(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game.startLoop();
+
+	ImGui::DestroyContext();
 
 	return 0;
 }

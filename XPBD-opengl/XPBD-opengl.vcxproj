@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;C:\Users\kgauc\source\repos\XPBD-opengl\imgui;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;C:\Users\kgauc\source\repos\XPBD-opengl\imgui;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\kgauc\vclibs\SDL2-2.26.5\include;C:\Users\kgauc\vclibs\glew-2.1.0-win32.zip\glew-2.1.0\include;C:\Users\kgauc\source\repos\XPBD-opengl\imgui;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\kgauc\vclibs\SDL2-2.26.5\lib\x64;C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;C:\Users\kgauc\source\repos\XPBD-opengl\imgui;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,13 +112,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\include\GL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\include\GL;C:\Users\kgauc\source\repos\XPBD-opengl\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;C:\Users\kgauc\source\repos\XPBD-opengl\imgui</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,31 +129,44 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\include\GL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\include\GL;C:\Users\kgauc\source\repos\XPBD-opengl\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\kgauc\vclibs\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;C:\Users\kgauc\source\repos\XPBD-opengl\imgui</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\imgui\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="..\imgui\imgui.cpp" />
+    <ClCompile Include="..\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="collisionconstraint.cpp" />
     <ClCompile Include="collisionconstrainthandler.cpp" />
     <ClCompile Include="constraintmanager.cpp" />
     <ClCompile Include="densityconstraint.cpp" />
     <ClCompile Include="distanceconstraint.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="instanceData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maxpositionconstraint.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="spatialhashgrid.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="solver.cpp" />
+    <ClCompile Include="verletScene.cpp" />
+    <ClCompile Include="verletSolver.cpp" />
+    <ClCompile Include="xpbdBallScene.cpp" />
+    <ClCompile Include="xpbdBallScene.h" />
+    <ClCompile Include="xpbdSolver.cpp" />
     <ClCompile Include="stb_define.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Vec2.h" />
@@ -169,9 +182,14 @@
     <ClInclude Include="maxpositionconstraint.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="profiler.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="solver.h" />
     <ClInclude Include="spatialhashgrid.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="solver.h" />
+    <ClInclude Include="verletScene.h" />
+    <ClInclude Include="verletSolver.h" />
+    <ClInclude Include="viewportData.h" />
+    <ClInclude Include="xpbdSolver.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>

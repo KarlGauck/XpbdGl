@@ -1,5 +1,9 @@
 #include <SDL.h>
 
+#include "imgui.h"
+#include "./backends/imgui_impl_sdl2.h"
+#include "./backends/imgui_impl_opengl3.h"
+
 #include <vector>
 #include <iostream>
 #include <chrono>
@@ -7,6 +11,8 @@
 #include "game.h"
 #include "renderer.h"
 #include "profiler.h"
+#include "xpbdBallScene.h"
+#include "verletScene.h"
 
 Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
 	window(window), SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT) 
@@ -15,44 +21,47 @@ Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
 
 	float VIEW_SCALE = 1.2f;
 	
-	this->solver = Solver();
+	this->scene = new XpbdBallScene();
+	//this->scene = new VerletScene();
+
 	quit = false;
 }
-
-static float rot = 0.0f;
 
 static Profiler pr("Profiler", 100);
 
 void Game::startLoop() {
-	
-	std::vector<float> positions;
+
 	while (!quit) {
 		pr.start();
 
-		handleEvents();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
 
 		float dt = pr.duration * 0.000000001f;
-		solver.solve(dt);
+		scene->step();
+		scene->solver->solve(dt);
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-		positions = solver.getPositions();
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::End();
+
+		handleEvents();
+
+		std::vector<InstanceData> positions = scene->getCircleData();
 		circleRenderer.setInstanceData(&positions);
 		circleRenderer.render(true);
 
-		float width = 100.f;
-		float height = 50.0f;
-
-		//rot += 0.2;
-
-		std::vector<float> rectPositions =
-		{
-			0.0f, -(height/2) - .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f,
-			0.0f, (height/2) + .5f, width, 1.0f, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
-			-(width/2) - .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 0.0f,
-			(width/2) + .5f, 0.0f, 1.0f, height, cos(rot), sin(rot), 1.0f, 1.0f, 1.0f, 1.0f
-		};
+		std::vector<InstanceData> rectPositions = scene->getRectData();
+		std::vector<LineData> lines = scene->getLineData();
+		for (LineData ld : lines)
+			rectPositions.push_back(ld.convertToInstanceData());
 		rectangleRenderer.setInstanceData(&rectPositions);
 		rectangleRenderer.render(false);
 
+		ImGui::Render();
+
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		SDL_GL_SwapWindow(window);
 		pr.end();
 	}
@@ -104,6 +113,8 @@ void Game::setupRenderers()
 void Game::handleEvents() {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0) {
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
 		if (e.type == SDL_QUIT)
 			quit = true;
 		if (e.type == SDL_MOUSEBUTTONDOWN)
@@ -112,25 +123,9 @@ void Game::handleEvents() {
 			SDL_GetMouseState(&x, &y);
 			float yOffset = (float)(SCREEN_HEIGHT / 2);
 			float xOffset = (float)(SCREEN_WIDTH / 2);
+			Vec2 viewportPos = Vec2((x - xOffset) * (2 * circleRenderer.VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * circleRenderer.VIEW_HEIGHT / SCREEN_HEIGHT)));
 
-			//solver.addParticle(Vec2((x - xOffset) * (2 * VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * VIEW_HEIGHT / SCREEN_HEIGHT))));
-
-			for (float dx = -10; dx <= 10; dx += 2)
-				for (float dy = -10; dy <= 10; dy += 2)
-					solver.addParticle(Vec2((x - xOffset) * (2*circleRenderer.VIEW_WIDTH/SCREEN_WIDTH) + dx, -((y - yOffset) * (2*circleRenderer.VIEW_HEIGHT/SCREEN_HEIGHT)) + dy),
-						Vec2(0.0f, 0.0f));
+			scene->mouseDownEvent(viewportPos);
 		}
-
-		/*
-		if (e.type == SDL_MOUSEMOTION)
-		{
-			int x, y;
-			SDL_GetMouseState(&x, &y);
-			float yOffset = (float)(SCREEN_HEIGHT / 2);
-			float xOffset = (float)(SCREEN_WIDTH / 2);
-			solver.addParticle(Vec2((x - xOffset) * (2*VIEW_WIDTH/SCREEN_WIDTH), -((y - yOffset) * (2*VIEW_HEIGHT/SCREEN_HEIGHT))));
-		}
-		*/
-		
 	}
 }
