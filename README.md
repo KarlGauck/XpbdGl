@@ -18,4 +18,6 @@ It is written in C++ and OpenGl is used for visualisation.
 - SPH Fluid Sim
 
 # Images
-![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/8e1c31dc-9176-42f6-9512-1a63d24e89e0)
+![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/518a712d-8bc2-4996-b1cd-1be8dfbb110a)
+![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/97f574d7-4f07-436f-96ad-9e73d258cfe6)
+
