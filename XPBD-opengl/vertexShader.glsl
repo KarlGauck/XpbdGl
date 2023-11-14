@@ -10,15 +10,26 @@ layout (location = 4) in vec4 color;
 
 layout (location = 0) out vec4 outcolor;
 
-uniform float VIEW_WIDTH;
-uniform float VIEW_HEIGHT;
+uniform vec2 viewportSize;
+uniform vec2 viewportOffset;
+uniform vec2 viewportRotation;
+
+vec2 rotate(vec2 point, vec2 c)
+{
+	return vec2(point.x*c.x - point.y*c.y, point.x*c.y + point.y*c.x);
+}
+
 void main()
 {
 	vec2 pos = (vertexPos * scale);
-	pos = vec2(pos.x*rot.x - pos.y*rot.y, pos.x*rot.y + pos.y*rot.x);
+	pos = rotate(pos, rot);
 	pos += offset;
-	pos.x /= VIEW_WIDTH;
-	pos.y /= VIEW_HEIGHT;
+	pos = rotate(pos, viewportRotation);
+	pos += viewportOffset;
+	pos.x /= viewportSize.x;
+	pos.y /= viewportSize.y;
 	gl_Position = vec4(pos, 0.0f, 1.0f);
 	outcolor = color;
 }
+
+

@@ -6,4 +6,5 @@ struct ViewportData
 {
 	float zoom;
 	Vec2 offset;
+	Vec2 rotation;
 };

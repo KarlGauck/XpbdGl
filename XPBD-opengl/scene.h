@@ -10,7 +10,7 @@ public:
 	Solver* solver;
 	ViewportData viewportData;
 
-	void step();
+	virtual void step();
 	
 	virtual std::vector<InstanceData> getCircleData();
 	virtual std::vector<InstanceData> getRectData();

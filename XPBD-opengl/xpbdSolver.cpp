@@ -47,8 +47,9 @@ void XpbdSolver::solve(float deltaTime)
 
 			oldPositions.push_back(particle.pos);
 
-			particle.vel -= gravityAccel * dt;
-			particle.pos += particle.vel * dt + gravityAccel * dt * dt * .5f;
+			if (gravity)
+				particle.vel -= gravityAccel * dt;
+			particle.pos += particle.vel * dt;
 		}
 
 		ConstraintManager::solveConstraints(particles, dt);
@@ -111,7 +112,7 @@ void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
 	particles.push_back(
 		Particle(
 			1.0f,
-			1.0f,
+			0.5f,
 			pos,
 			vel,
 			color

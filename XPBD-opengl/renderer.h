@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "instanceData.h"
+#include "viewportData.h"
+#include "windowData.h"
 
 class Renderer {
 public:
@@ -13,6 +15,7 @@ public:
 
 	void render(bool clear);
 	void setInstanceData(std::vector<InstanceData>* buffer);
+	void updateUniforms(ViewportData viewportData, WindowData windowData);
 
 	float ZOOM = 3.5;
 	float VIEW_WIDTH = ZOOM * 16.f, VIEW_HEIGHT = ZOOM * 9.f;
@@ -28,15 +31,15 @@ private:
 	std::vector<float> vertexData;
 	std::vector<unsigned int> indexData;
 
-
 	unsigned int program;
 	unsigned int circleVAO;
 	unsigned int circleVBO;
 	unsigned int circleEBO;
 	unsigned int circleInstanceVBO;
 
-	int viewWidthUniformLoc;
-	int viewHeightUniformLoc;
+	int viewportSizeUniformLoc;
+	int viewportOffsetUniformLoc;
+	int viewportRotationUniformLoc;
 
 	std::string getShaderSource(std::string path);
 	void shaderLog(int shaderId);
@@ -46,7 +49,6 @@ private:
 	void setupVAOs();
 	void setupUniformLocs();
 
-	void updateUniforms();
 	void pushVertexData();
 	void pushInstanceData();
 };

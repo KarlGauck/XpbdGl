@@ -189,6 +189,7 @@
     <ClInclude Include="verletScene.h" />
     <ClInclude Include="verletSolver.h" />
     <ClInclude Include="viewportData.h" />
+    <ClInclude Include="windowData.h" />
     <ClInclude Include="xpbdSolver.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

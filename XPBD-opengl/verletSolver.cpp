@@ -8,10 +8,7 @@ void VerletSolver::solve(float dt)
 	for (Particle& particle : particles)
 	{
 		Vec2 oldPos = particle.pos;
-
-		Vec2 vel = (particle.pos - particle.oldPos) / dt;
-		vel += gravity * dt;
-		particle.pos += vel * dt;
+		particle.pos += (particle.pos - particle.oldPos) + gravity * dt*dt;
 
 		if (particle.pos.y < -10)
 			particle.pos.y = -10;
@@ -28,7 +25,7 @@ void VerletSolver::solve(float dt)
 
 void VerletSolver::solveCollisions()
 {
-	int steps = 100;
+	int steps = 10;
 	for (int step = 0; step < steps; step++)
 	{
 		for (int pI1 = 0; pI1 < particles.size(); pI1++)
@@ -41,9 +38,10 @@ void VerletSolver::solveCollisions()
 					continue;
 				if (!collide(pI1, pI2))
 					continue;
+				float error = 1-p2.pos.distance(p1.pos);
 				Vec2 delta = p2.pos - p1.pos;
-				p1.pos -= delta * .5 * (1.0f/steps);
-				p2.pos += delta * .5 * (1.0f/steps);
+				p1.pos -= delta * .5 * error;
+				p2.pos += delta * .5 * error;
 			}
 		}
 	}

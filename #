@@ -1,183 +1,148 @@
-#pragma once
+#include <SDL.h>
 
+#include "imgui.h"
+#include "./backends/imgui_impl_sdl2.h"
+#include "./backends/imgui_impl_opengl3.h"
+
+#include <vector>
 #include <iostream>
-#include <tuple>
-#include <map>
-#include <cmath>
-#include <algorithm>
+#include <chrono>
 
-#include "Vec2.h"
-#include "xpbdSolver.h"
-#include "particle.h"
-#include "collisionconstraint.h"
-#include "distanceconstraint.h"
-#include "maxpositionconstraint.h"
-#include "constraintmanager.h"
+#include "game.h"
+#include "renderer.h"
 #include "profiler.h"
+#include "xpbdBallScene.h"
+#include "verletScene.h"
 
-# define M_PI 3.14159265358979323846
+Game::Game(SDL_Window* window, int SCREEN_WIDTH, int SCREEN_HEIGHT):
+	window(window), SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT) 
+{
+	setupRenderers();
 
-XpbdSolver::XpbdSolver() {
-	int MAX_PARTIClES = 10000;
-	particles.reserve(MAX_PARTIClES);
-	oldPositions.reserve(MAX_PARTIClES);
+	float VIEW_SCALE = 1.2f;
+	
+	this->scene = new XpbdBallScene();
+	//this->scene = new VerletScene();
+
+	quit = false;
 }
 
-static int count = 0;
+static Profiler pr("Profiler", 100);
 
-void XpbdSolver::solve(float deltaTime)
-{
+void Game::startLoop() {
 
-	count = (count + 1) % 5;
-	if (count == 0)
-		;// addParticle(Vec2(-45, 20), Vec2(20.0f, -20.f));
-	float substepNumber = 1;
-	for (int substep = 0; substep < substepNumber; substep++) 
-	{
-		float dt = deltaTime / substepNumber;
-		oldPositions.clear();
+	while (!quit) {
+		pr.start();
 
-		Vec2 gravityAccel(0.f, 9.81f);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
 
-		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) 
-		{
-			Particle& particle = particles[particleIndex];
+		float dt = pr.duration * 0.000000001f;
+		scene->step();
+		scene->solver->solve(dt);
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-			oldPositions.push_back(particle.pos);
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::End();
 
-			particle.vel -= gravityAccel * dt;
-			particle.pos += particle.vel * dt + gravityAccel * dt * dt * .5f;
-		}
+		handleEvents();
 
-		ConstraintManager::solveConstraints(particles, dt);
-		//calculateSPH();
-
-		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-		{
-			Particle& particle = particles[particleIndex];
-			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
-		}
-	}
-}
-
-void XpbdSolver::addSoftBody(Vec2 pos)
-{
-	int width = 7;
-	int height = 7;
-	float gap = 1.3;
-	for (int x = -width/2; x <= width/2; x++)
-	{
-		for (int y = -height/2; y <= height/2; y++)
-		{
-			addParticle(pos + Vec2(x * gap, y * gap), Vec2(0.0f, 0.0f));
-			int index = particles.size() - 1;
-
-
-			/* BUGGY CODE: WILL CRASH, DO NOT USE!!!!
-			for (int dx = -1; dx <= 0; dx++) {
-				for (int dy = -1; dy <= 0; dy++) {
-					bool run = true;
-					if (dx == 0 && dy == 0)
-						run = false;
-					if (x == -width / 2 && dx != 0)
-						run = false;
-					if (y == -width / 2 && dy != 0)
-						run = false;
-					if (!run)
-					{
-						std::cout << "x: " << x << " dx: " << dx << " y: " << y << " dy: " << dy << std::endl;
-						continue;
-					}
-					int nIndex = index + dy * width + dx;
-					std::cout << nIndex << " size: " << particles.size();
-					int parts[2] = {index, nIndex};
-					DistanceConstraint::add(parts, sqrt((dx*gap)*(dx*gap) + (dy*gap)*(dy*gap)));
-				}
-			}
-			*/
-		}
-	}
-}
-
-void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
-{
-	float color[] = {
-		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
-		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
-		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX),
-		static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX)
-	};
-	particles.push_back(
-		Particle(
-			1.0f,
-			0.5f,
-			pos,
-			vel,
-			color
-		)
-	);
-
-	int p1[1];
-	p1[0] = particles.size() - 1;
-
-	float width = 100;
-	float height = 50;
-	MaxPositionConstraint::add(
-		p1,
-		((width-1)/2),
-		((height-1)/2),
-		-((width-1)/2),
-		-((height-1)/2)
-	);
-
-	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-	{
-		if (particleIndex == particles.size()-1)
-			continue;
-		int collisionParticles[2] = { particleIndex, particles.size()-1};
-		CollisionConstraint::add(collisionParticles);
-	}
-}
-
-std::vector<InstanceData> XpbdSolver::getCircleData() 
-{
-	std::vector<InstanceData> data;
-	for (Particle& particle : particles) {
-		data.push_back(
-			InstanceData{
-				particle.pos,
-				Vec2(particle.radius * 2, particle.radius * 2),
-				Vec2(0.0f, 0.0f),
-				particle.color
-			}
+		std::vector<InstanceData> positions = scene->getCircleData();
+		circleRenderer.setInstanceData(&positions);
+		circleRenderer.updateUniforms(
+			scene->viewportData,
+			WindowData{ SCREEN_WIDTH, SCREEN_HEIGHT }
 		);
-		
-	return data;
+		circleRenderer.render(true);
+
+		std::vector<InstanceData> rectPositions = scene->getRectData();
+		std::vector<LineData> lines = scene->getLineData();
+		for (LineData ld : lines)
+			rectPositions.push_back(ld.convertToInstanceData());
+		rectangleRenderer.setInstanceData(&rectPositions);
+		rectangleRenderer.updateUniforms(
+			scene->viewportData,
+			WindowData{ SCREEN_WIDTH, SCREEN_HEIGHT }
+		);
+		rectangleRenderer.render(false);
+
+		ImGui::Render();
+
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		SDL_GL_SwapWindow(window);
+		pr.end();
+	}
+	delete scene;
 }
 
-/*
-void Solver::calculateDensity()
+void Game::setupRenderers()
 {
-	float simRadius = 3.0f;
-	std::vector<float>  densities;
+	// Circle Renderer
+	int fanCount = 50;
+	std::vector<float> vertexData;
+	vertexData.push_back(0.0f);
+	vertexData.push_back(0.0f);
 
-	for (Particle* part : particles)
+	for (int i = 0; i < fanCount; i++) {
+		float angle = (float)(2 * M_PI / fanCount) * i;
+		float x = cos(angle) / 2;
+		float y = sin(angle) / 2;
+		vertexData.push_back(x);
+		vertexData.push_back(y);
+	}
+
+	std::vector<unsigned int> indexData;
+	for (int i = 0; i < fanCount; i++) {
+		std::cout << 0 << "  :  " << ((i % fanCount) + 1) << "  :  " << ((i + 1) % fanCount) + 1 << std::endl;
+		indexData.push_back(0);
+		indexData.push_back((i%fanCount) + 1);
+		indexData.push_back(((i+1)%fanCount) + 1);
+	}
+
+	this->circleRenderer = Renderer(vertexData, indexData, "vertexShader.glsl", "fragmentShader.glsl");
+
+	// Rectangle Renderer
+	vertexData =
 	{
-		part->density = 0.0f;
-		for (Particle* other : particles) 
+		-0.5f, 0.5f,
+		-0.5f, -0.5f,
+		0.5f, -0.5f,
+		0.5f, 0.5f
+	};
+	indexData = 
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+	this->rectangleRenderer = Renderer(vertexData, indexData, "vertexShader.glsl", "fragmentShader.glsl");
+
+}
+
+void Game::handleEvents() {
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0) {
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
+		if (e.type == SDL_QUIT)
+			quit = true;
+		if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
-			if (part == other)
-				continue;
-			float dist = part->pos.distance(other->pos);
-			part->density += kernel(simRadius, dist) + other->mass;
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			float yOffset = (float)(SCREEN_HEIGHT / 2);
+			float xOffset = (float)(SCREEN_WIDTH / 2);
+
+			ViewportData& data = scene->viewportData;
+
+			Vec2 pos = Vec2(x-xOffset, y-yOffset);
+			pos.x /= (SCREEN_WIDTH / 2) / ((float)SCREEN_WIDTH/SCREEN_HEIGHT);
+			pos.y /= -(SCREEN_HEIGHT / 2);
+			pos *= data.zoom;
+			pos = Vec2(-pos.x * data.rotation.x + pos.y * data.rotation.y, - pos.x * data.rotation.y - pos.y * data.rotation.x);
+			pos += data.offset;
+
+			scene->mouseDownEvent(pos);
 		}
 	}
 }
-
-float kernel(float radius, float dist)
-{
-	float volume = M_PI * pow(radius, 8) / 4;
-	float value = std::max(0.f, radius * radius - dist * dist);
-	return value * value * value / volume;
-}
-*/

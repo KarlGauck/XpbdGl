@@ -38,7 +38,6 @@ void Renderer::render(bool clear)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	pushInstanceData();
-	updateUniforms();
 
 	glBindVertexArray(circleVAO);
 	glDrawElementsInstanced(GL_TRIANGLES, indexData.size(), GL_UNSIGNED_INT, 0, instanceCount);
@@ -167,14 +166,18 @@ void Renderer::setupVAOs()
 
 void Renderer::setupUniformLocs() 
 {
-	viewWidthUniformLoc = glGetUniformLocation(program, "VIEW_WIDTH");
-	viewHeightUniformLoc = glGetUniformLocation(program, "VIEW_HEIGHT");
+	viewportSizeUniformLoc = glGetUniformLocation(program, "viewportSize");
+	viewportOffsetUniformLoc = glGetUniformLocation(program, "viewportOffset");
+	viewportRotationUniformLoc = glGetUniformLocation(program, "viewportRotation");
 }
 
-void Renderer::updateUniforms() 
+void Renderer::updateUniforms(ViewportData viewportData, WindowData windowData) 
 {
-	glUniform1f(viewWidthUniformLoc, VIEW_WIDTH);
-	glUniform1f(viewHeightUniformLoc, VIEW_HEIGHT);
+	float whRatio = (float)windowData.width/windowData.height;
+
+	glUniform2f(viewportSizeUniformLoc, whRatio * viewportData.zoom, viewportData.zoom);
+	glUniform2f(viewportOffsetUniformLoc, viewportData.offset.x, viewportData.offset.y);
+	glUniform2f(viewportRotationUniformLoc, viewportData.rotation.x, viewportData.rotation.y);
 }
 
 void Renderer::pushVertexData() 

@@ -16,10 +16,11 @@ public:
 	void addParticle(Vec2 pos, Vec2 vel) override;
 
 	void addSoftBody(Vec2 pos);
-
 	std::vector<InstanceData> getCircleData() override;
 
 	std::vector<Particle> particles;
+
+	bool gravity = true;
 private:
 	std::vector<Vec2> oldPositions;
 

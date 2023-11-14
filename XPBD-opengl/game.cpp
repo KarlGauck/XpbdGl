@@ -41,15 +41,15 @@ void Game::startLoop() {
 		float dt = pr.duration * 0.000000001f;
 		scene->step();
 		scene->solver->solve(dt);
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::End();
 
 		handleEvents();
 
 		std::vector<InstanceData> positions = scene->getCircleData();
 		circleRenderer.setInstanceData(&positions);
+		circleRenderer.updateUniforms(
+			scene->viewportData,
+			WindowData{ SCREEN_WIDTH, SCREEN_HEIGHT }
+		);
 		circleRenderer.render(true);
 
 		std::vector<InstanceData> rectPositions = scene->getRectData();
@@ -57,6 +57,10 @@ void Game::startLoop() {
 		for (LineData ld : lines)
 			rectPositions.push_back(ld.convertToInstanceData());
 		rectangleRenderer.setInstanceData(&rectPositions);
+		rectangleRenderer.updateUniforms(
+			scene->viewportData,
+			WindowData{ SCREEN_WIDTH, SCREEN_HEIGHT }
+		);
 		rectangleRenderer.render(false);
 
 		ImGui::Render();
@@ -65,6 +69,7 @@ void Game::startLoop() {
 		SDL_GL_SwapWindow(window);
 		pr.end();
 	}
+	delete scene;
 }
 
 void Game::setupRenderers()
@@ -114,6 +119,8 @@ void Game::handleEvents() {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0) {
 		ImGui_ImplSDL2_ProcessEvent(&e);
+		if (ImGui::GetIO().WantCaptureMouse)
+			continue;
 
 		if (e.type == SDL_QUIT)
 			quit = true;
@@ -123,9 +130,20 @@ void Game::handleEvents() {
 			SDL_GetMouseState(&x, &y);
 			float yOffset = (float)(SCREEN_HEIGHT / 2);
 			float xOffset = (float)(SCREEN_WIDTH / 2);
-			Vec2 viewportPos = Vec2((x - xOffset) * (2 * circleRenderer.VIEW_WIDTH / SCREEN_WIDTH), -((y - yOffset) * (2 * circleRenderer.VIEW_HEIGHT / SCREEN_HEIGHT)));
 
-			scene->mouseDownEvent(viewportPos);
+			ViewportData& data = scene->viewportData;
+
+			Vec2 pos = Vec2(x-xOffset, y-yOffset);
+			pos.x /= (SCREEN_WIDTH / 2) / ((float)SCREEN_WIDTH/SCREEN_HEIGHT);
+			pos.y /= -(SCREEN_HEIGHT / 2);
+			pos *= data.zoom;
+			Vec2 rot = data.rotation;
+			Vec2 invRot = Vec2(rot.x / (rot.x * rot.x + rot.y * rot.y), -rot.y / (rot.x * rot.x + rot.y * rot.y));
+			pos -= data.offset;
+			pos = Vec2(-pos.x * invRot.x + pos.y * invRot.y, - pos.x * invRot.y - pos.y * invRot.x);
+			pos *= -1;
+
+			scene->mouseDownEvent(pos);
 		}
 	}
 }
