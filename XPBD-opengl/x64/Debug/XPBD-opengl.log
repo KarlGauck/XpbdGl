@@ -1,2 +1,4 @@
-﻿  game.cpp
+﻿  xpbdBallScene.cpp
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\xpbdBallScene.cpp(35,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\xpbdBallScene.cpp(35,46): warning C4305: 'argument': truncation from 'double' to 'float'
   XPBD-opengl.vcxproj -> C:\Users\kgauc\source\repos\XPBD-opengl\x64\Debug\XPBD-opengl.exe

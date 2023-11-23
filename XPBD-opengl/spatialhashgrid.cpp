@@ -5,7 +5,7 @@
 #include "spatialhashgrid.h"
 #include "particle.h"
 
-SpatialHashGrid::SpatialHashGrid()
+SpatialHashGrid::SpatialHashGrid(float cellSize): cellSize(cellSize)
 {
 	particles.reserve(PARTICLE_COUNT_RESERVE);
 }
@@ -53,7 +53,6 @@ void SpatialHashGrid::updateParticles(std::vector<Particle>& globalParticles)
 
 int SpatialHashGrid::hash(Vec2 pos) 
 {
-	float cellSize = 3.0 * 2;
 	int bucketCount = (sizeof(buckets) / sizeof(int));
 	int x = (int)floor(pos.x/cellSize);
 	int y = (int)floor(pos.y/cellSize);

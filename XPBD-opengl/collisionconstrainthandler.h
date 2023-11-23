@@ -8,10 +8,9 @@
 class CollisionConstraintHandler
 {
 public:
-	static void updateConstraints(std::vector<Particle>& particles);
+	static void updateConstraints(std::vector<Particle>& particles, SpatialHashGrid grid);
 
 private:
-	static SpatialHashGrid grid;
 	static std::vector<int> returnParticles;
 	static std::vector<int> processedParticles;
 	static std::vector<int> neighbourParticles;

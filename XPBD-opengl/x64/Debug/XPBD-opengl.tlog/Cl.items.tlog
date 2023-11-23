@@ -9,8 +9,10 @@ C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\collisionconstraint.cpp;C:\U
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\collisionconstrainthandler.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\collisionconstrainthandler.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\constraintmanager.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\constraintmanager.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\densityconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\densityconstraint.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\densityconstrainthandler.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\densityconstrainthandler.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\distanceconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\distanceconstraint.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\game.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\game.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\instanceData.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\instanceData.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\main.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\main.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\maxpositionconstraint.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\maxpositionconstraint.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\particle.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\particle.obj
@@ -18,6 +20,10 @@ C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\profiler.cpp;C:\Users\kgauc\
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\scene.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\scene.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\spatialhashgrid.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\spatialhashgrid.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\renderer.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\renderer.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\verletScene.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\verletScene.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\verletSolver.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\verletSolver.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\xpbdBallScene.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\xpbdBallScene.obj
+C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\xpbdBallScene.h;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\xpbdBallScene.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\xpbdSolver.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\xpbdSolver.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\stb_define.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\stb_define.obj
 C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\Vec2.cpp;C:\Users\kgauc\source\repos\XPBD-opengl\XPBD-opengl\x64\Debug\Vec2.obj

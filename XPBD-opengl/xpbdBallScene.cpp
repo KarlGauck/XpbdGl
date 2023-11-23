@@ -2,16 +2,20 @@
 #include "xpbdSolver.h"
 #include "verletSolver.h"
 
+#include "distanceconstraint.h"
+#include "densityconstraint.h"
+
 #include "imgui.h"
 
 #include <string>
+#include <iostream>
 
 XpbdBallScene::XpbdBallScene()
 {
 	solver = new XpbdSolver();;
 	viewportData = ViewportData
 	{
-		35.0f,
+		70.f,
 		Vec2(0.0f, 0.0f),
 		Vec2(1.0f, 0.0f)
 	};
@@ -22,6 +26,7 @@ static float zoom = 0.0f;
 static float rotation = 0.0f;
 
 static bool paused = false;
+static bool showLinks = false;
 
 void XpbdBallScene::step()
 {
@@ -31,7 +36,9 @@ void XpbdBallScene::step()
 	if (ImGui::Button("Pause"))
 		paused = !paused;
 	ImGui::Checkbox("Gravity: ", &(solver->gravity));
+	ImGui::Checkbox("Show Links: ", &showLinks);
 	ImGui::SliderFloat("Rotation", &rotation, -2*3.1415926535, 2 * 3.1415926535);
+	ImGui::SliderFloat("Restdensity", &(DensityConstraint::RestDensity), 0.f, 150.f);
 	ImGui::SliderFloat2("Offset", (float*) & (viewportData.offset), -50.f, 50.f);
 	ImGui::End();
 	viewportData.rotation = Vec2((float)cos(rotation), sin(rotation));
@@ -53,7 +60,9 @@ void XpbdBallScene::step()
 
 void XpbdBallScene::mouseDownEvent(Vec2 pos)
 {
-	solver->addParticle(pos, Vec2(0.0, 0.0f));
+	for (int x = 0; x > -10; x--)
+		for (int y = 0; y > -10; y--)
+			solver->addParticle(pos + Vec2(x, y), Vec2(0.0, 0.0f));
 }
 
 std::vector<InstanceData> XpbdBallScene::getCircleData()
@@ -63,8 +72,8 @@ std::vector<InstanceData> XpbdBallScene::getCircleData()
 
 std::vector<InstanceData> XpbdBallScene::getRectData()
 {
-	float width = 100.f;
-	float height = 50.0f;
+	float width = 200.f;
+	float height = 100.0f;
 
 	return {
 		InstanceData {
@@ -96,5 +105,25 @@ std::vector<InstanceData> XpbdBallScene::getRectData()
 
 std::vector<LineData> XpbdBallScene::getLineData()
 {
-	return {};
+	if (!showLinks)
+		return {};
+	std::vector<LineData> lines = std::vector<LineData>();
+
+	XpbdSolver* xs = (XpbdSolver*)solver;
+	for (DensityConstraint& constraint : DensityConstraint::constraints)
+	{
+		for (int neighbourIndex : constraint.neighbours)
+		{
+			Vec2 p1 = xs->particles[constraint.particle].pos;
+			Vec2 p2 = xs->particles[neighbourIndex].pos;
+
+			lines.push_back(LineData{
+				p1,
+				p2,
+				0.3,
+				{1.0f, 1.0f, 1.0f, 1.0f}
+			});
+		}
+	}
+	return lines;
 }

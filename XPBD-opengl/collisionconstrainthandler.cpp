@@ -5,30 +5,13 @@
 #include <iostream>
 #include <numeric>
 
-SpatialHashGrid CollisionConstraintHandler::grid;
 std::vector<int> CollisionConstraintHandler::processedParticles;
 std::vector<int> CollisionConstraintHandler::returnParticles;
 std::vector<int> CollisionConstraintHandler::neighbourParticles;
 
-void CollisionConstraintHandler::updateConstraints(std::vector<Particle>& globalParticles)
+void CollisionConstraintHandler::updateConstraints(std::vector<Particle>& globalParticles, SpatialHashGrid grid)
 {
 	CollisionConstraint::clear();
-
-	/*
-	for (int i = 0; i < globalParticles.size(); i++)
-	{
-		for (int j = 0; j < globalParticles.size(); j++)
-		{
-			if (i == j)
-				continue;
-			int vec[2] = { i, j };
-			CollisionConstraint::add(vec);
-		} 
-	}
-	return;
-	*/
-
-	grid.updateParticles(globalParticles);
 	
 	int constraintCount = 0;
 	

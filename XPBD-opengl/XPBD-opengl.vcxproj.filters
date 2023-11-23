@@ -159,6 +159,9 @@
     <ClCompile Include="verletScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="densityconstrainthandler.cpp">
+      <Filter>Source Files\Physics\Solver\XPBD\DynamicConstraintHandlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="windowData.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="densityconstrainthandler.h">
+      <Filter>Header Files\Physics\Solver\XPBD\DynamicConstraintHandlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

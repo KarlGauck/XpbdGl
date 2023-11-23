@@ -8,12 +8,14 @@
 class SpatialHashGrid
 {
 public:
-	SpatialHashGrid();
+	SpatialHashGrid(float cellSize);
+
+	float cellSize;
 
 	void updateParticles(std::vector<Particle>& globalParticles);
 
 	std::vector<int> getParticles(Vec2 pos);
-	std::vector<int> resultParticles();
+	std::vector<int> resultParticles;
 private:
 	const static int PARTICLE_COUNT_RESERVE = 10000;
 

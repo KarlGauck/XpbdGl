@@ -18,8 +18,10 @@ public:
 	void addSoftBody(Vec2 pos);
 	std::vector<InstanceData> getCircleData() override;
 
-	std::vector<Particle> particles;
+	float getDensity(Vec2 pos);
+	Vec2 getPressureForce(Particle& part, float dt);
 
+	std::vector<Particle> particles;
 	bool gravity = true;
 private:
 	std::vector<Vec2> oldPositions;

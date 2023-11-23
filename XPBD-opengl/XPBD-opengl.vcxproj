@@ -152,6 +152,7 @@
     <ClCompile Include="collisionconstrainthandler.cpp" />
     <ClCompile Include="constraintmanager.cpp" />
     <ClCompile Include="densityconstraint.cpp" />
+    <ClCompile Include="densityconstrainthandler.cpp" />
     <ClCompile Include="distanceconstraint.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="instanceData.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="collisionconstrainthandler.h" />
     <ClInclude Include="constraintmanager.h" />
     <ClInclude Include="densityconstraint.h" />
+    <ClInclude Include="densityconstrainthandler.h" />
     <ClInclude Include="distanceconstraint.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="instanceData.h" />

@@ -23,32 +23,51 @@ XpbdSolver::XpbdSolver() {
 	oldPositions.reserve(MAX_PARTIClES);
 }
 
-static int count = 0;
+static int count = 1;
 static int MAX_COUNT = 1500;
+
+static float SMOOTHING_RADIUS = 13.2f;
+static float targetDensity = 0.00f;
+static float pressureMultiplier = 18000.0f;
 
 void XpbdSolver::solve(float deltaTime)
 {
-
-	count++;
+	//count++;
 	if (count % 5 == 0 && particles.size() < MAX_COUNT)
 		for (int i = 0; i < 5; i ++)
-			addParticle(Vec2(-45 , 20 - i*4), Vec2(60.0f, -5.f));
+			addParticle(Vec2(-5 , 2 - i), Vec2(6.0f, -0.5f));
 	float substepNumber = 1;
 	for (int substep = 0; substep < substepNumber; substep++) 
 	{
 		float dt = deltaTime / substepNumber;
 		oldPositions.clear();
 
-		Vec2 gravityAccel(0.f, 9.81f);
+		float fac = 1/1200.f;
 
+		// Calculate Densities
+		/*
+		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
+		{
+			Particle& particle = particles[particleIndex];
+			particle.density = getDensity(particle.pos + particle.vel*fac);
+		}
+		*/
+
+		Vec2 gravityAccel(0.f, 9.81f);
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) 
 		{
 			Particle& particle = particles[particleIndex];
-
 			oldPositions.push_back(particle.pos);
 
-			if (gravity)
+
+
+			// Apply pressureforce
+			if (particle.density != 0)
+				;// particle.vel = (getPressureForce(particle, fac) / particle.density) * dt;
+
+			if (gravity && particleIndex != 0)
 				particle.vel -= gravityAccel * dt;
+
 			particle.pos += particle.vel * dt;
 		}
 
@@ -122,8 +141,8 @@ void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
 	int p1[1];
 	p1[0] = particles.size() - 1;
 
-	float width = 100;
-	float height = 50;
+	float width = 200;
+	float height = 100;
 	MaxPositionConstraint::add(
 		p1,
 		((width-1)/2),
@@ -132,6 +151,7 @@ void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
 		-((height-1)/2)
 	);
 
+	/*
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		if (particleIndex == particles.size()-1)
@@ -139,6 +159,7 @@ void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
 		int collisionParticles[2] = { particleIndex, particles.size()-1};
 		CollisionConstraint::add(collisionParticles);
 	}
+	*/
 }
 
 std::vector<InstanceData> XpbdSolver::getCircleData() 
@@ -161,29 +182,81 @@ std::vector<InstanceData> XpbdSolver::getCircleData()
 	return data;
 }
 
-/*
-void Solver::calculateDensity()
+static float kernelFunction_2(float radius, float distance)
 {
-	float simRadius = 3.0f;
-	std::vector<float>  densities;
+	if (distance >= radius) return 0;
 
-	for (Particle* part : particles)
+	float volume = 3.1415926535 * pow(radius, 8) / 4;
+	float val = std::fmax(0, radius * radius - distance * distance);
+	return val * val * val / volume;
+}
+
+static float kernelFunction(float radius, float distance)
+{
+	if (distance >= radius) return 0;
+
+	float volume = (M_PI * pow(radius, 4)) / 6;
+	return (radius - distance) * (radius - distance) / volume;
+}
+
+static float kernelGrad(float radius, float distance)
+{
+	if (distance >= radius) return 0;
+	float scale = 12 / (pow(radius, 4) * M_PI);
+	return (distance - radius) * scale;
+}
+
+static float kernelGrad_2(float radius, float distance)
+{
+	if (distance >= radius) return 0;
+	return (-24 * distance * pow(pow(radius, 2) - pow(distance, 2), 2) / (3.1415926535 * pow(radius, 8)));
+}
+
+
+
+static float densityToPressure(float density)
+{
+	float error = density - targetDensity;
+	return error * pressureMultiplier;
+}
+
+
+float XpbdSolver::getDensity(Vec2 pos)
+{
+	float density = 0.0f;
+	for (Particle& particle : particles)
 	{
-		part->density = 0.0f;
-		for (Particle* other : particles) 
-		{
-			if (part == other)
-				continue;
-			float dist = part->pos.distance(other->pos);
-			part->density += kernel(simRadius, dist) + other->mass;
-		}
+		float dist = particle.pos.distance(pos);
+		if (dist == 0)
+			continue;
+		density += kernelFunction(SMOOTHING_RADIUS, dist) * particle.mass;
 	}
+	return density;
 }
 
-float kernel(float radius, float dist)
+Vec2 XpbdSolver::getPressureForce(Particle& part, float dt)
 {
-	float volume = M_PI * pow(radius, 8) / 4;
-	float value = std::max(0.f, radius * radius - dist * dist);
-	return value * value * value / volume;
+	Vec2 force = Vec2(0.0f, 0.0f);
+	for (Particle& particle : particles)
+	{
+		float dist = particle.pos.distance(part.pos);
+		if (dist > SMOOTHING_RADIUS)
+			continue;
+		if (particle.density == 0)
+			continue;
+		if (dist == 0)
+			continue;
+
+		float pressure1 = densityToPressure(particle.density);
+		float pressure2 = densityToPressure(part.density);
+		float sharedPressure = (pressure1 + pressure2) / 2;
+
+		float fac = 0.03;
+		Vec2 pn1 = particle.pos + particle.vel * dt;
+		Vec2 pn2 = part.pos + part.vel * dt;
+
+		force += ((pn1-pn2)/dist) * sharedPressure * kernelGrad(SMOOTHING_RADIUS, dist) * particle.mass/particle.density;
+	}
+	return force;
 }
-*/
+
