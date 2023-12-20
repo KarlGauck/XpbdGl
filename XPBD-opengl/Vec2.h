@@ -11,6 +11,8 @@ struct Vec2
 	void normalize();
 	Vec2 normalized();
 
+	float length();
+
 	float dot(const Vec2& other);
 
 	float distance(const Vec2& other);

@@ -68,6 +68,11 @@ float Vec2::distance(const Vec2& other)
 	return (float) sqrt(dx*dx + dy*dy);
 }
 
+float Vec2::length()
+{
+	return (float)sqrt(x * x + y * y);
+}
+
 void Vec2::normalize()
 {
 	float length = (float)sqrt(x*x + y*y);

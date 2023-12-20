@@ -22,11 +22,9 @@ public:
 	Vec2 getPressureForce(Particle& part, float dt);
 
 	std::vector<Particle> particles;
-	bool gravity = true;
+	bool gravity = false;
 private:
 	std::vector<Vec2> oldPositions;
-
-	void moveParticles(float dt);
 };
 
 

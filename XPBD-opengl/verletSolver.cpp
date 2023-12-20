@@ -63,7 +63,8 @@ void VerletSolver::addParticle(Vec2 pos, Vec2 vel)
 			0.5,
 			pos,
 			vel,
-			color
+			color,
+			false
 		)
 	);
 } 

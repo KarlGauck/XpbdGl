@@ -12,13 +12,17 @@ void DensityConstraintHandler::updateConstraints(std::vector<Particle>& particle
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		Particle& particle = particles[particleIndex];
+		if (!particle.fluid)
+			continue;
 		std::vector<int> neighbours;
-		for (int dx = 1; dx > -1; dx--)
-			for (int dy = 1; dy > -1; dy--)
+		//for (int dx = 1; dx > -1; dx--)
+			//for (int dy = 1; dy > -1; dy--)
 			{
 				//std::vector<int> cellParticles = grid.getParticles(particle.pos + Vec2(dx * grid.cellSize, dy * grid.cellSize));
 				for (int p = 0; p < particles.size(); p++/* : cellParticles*/)
 				{
+					if (!particles[p].fluid)
+						continue;
 					if (particle.pos.x == particles[p].pos.x && particle.pos.y == particles[p].pos.y)
 						continue;
 					if (particle.pos.distance(particles[p].pos) >= DensityConstraint::KernelRadius)

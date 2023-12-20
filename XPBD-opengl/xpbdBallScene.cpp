@@ -12,7 +12,7 @@
 
 XpbdBallScene::XpbdBallScene()
 {
-	solver = new XpbdSolver();;
+	solver = new XpbdSolver();
 	viewportData = ViewportData
 	{
 		70.f,
@@ -38,7 +38,10 @@ void XpbdBallScene::step()
 	ImGui::Checkbox("Gravity: ", &(solver->gravity));
 	ImGui::Checkbox("Show Links: ", &showLinks);
 	ImGui::SliderFloat("Rotation", &rotation, -2*3.1415926535, 2 * 3.1415926535);
-	ImGui::SliderFloat("Restdensity", &(DensityConstraint::RestDensity), 0.f, 150.f);
+	ImGui::SliderFloat("Restdensity", &(DensityConstraint::RestDensity), 0.001f, 3.f);
+	ImGui::SliderFloat("Kernel Radius", &(DensityConstraint::KernelRadius), 2.f, 20.f);
+	ImGui::SliderFloat("Epsilon Relaxation", &(DensityConstraint::EpsilonRelaxation), 0.000f, 3.f);
+	ImGui::SliderFloat("DoubleCos K-Value", &(DensityConstraint::DoubleCosKVal), 0.000f, 3.f);
 	ImGui::SliderFloat2("Offset", (float*) & (viewportData.offset), -50.f, 50.f);
 	ImGui::End();
 	viewportData.rotation = Vec2((float)cos(rotation), sin(rotation));
@@ -60,9 +63,15 @@ void XpbdBallScene::step()
 
 void XpbdBallScene::mouseDownEvent(Vec2 pos)
 {
-	for (int x = 0; x > -10; x--)
-		for (int y = 0; y > -10; y--)
-			solver->addParticle(pos + Vec2(x, y), Vec2(0.0, 0.0f));
+	XpbdSolver* xs = (XpbdSolver*)solver;
+	int index = xs->particles.size();
+	for (int x = 0; x < 7; x ++)
+		for (int y = 0; y < 7; y++)
+			solver->addParticle(pos + Vec2((x-3)*2, (y-3)*2), Vec2(0.0, 0.0f));
+	/*solver->addParticle(pos, Vec2(0.0, 0.0f));
+	Particle& particle = xs->particles[index];
+	particle.radius = 10;
+	particle.fluid = false;*/
 }
 
 std::vector<InstanceData> XpbdBallScene::getCircleData()

@@ -32,10 +32,19 @@ static float pressureMultiplier = 18000.0f;
 
 void XpbdSolver::solve(float deltaTime)
 {
-	//count++;
+	/*
+	count++;
 	if (count % 5 == 0 && particles.size() < MAX_COUNT)
-		for (int i = 0; i < 5; i ++)
-			addParticle(Vec2(-5 , 2 - i), Vec2(6.0f, -0.5f));
+		for (int i = 0; i < 50; i ++)
+			addParticle(Vec2(-100 + (i % 4), 50 - i * 2), Vec2(100.0f, 0.f));
+	auto it = particles.begin();
+	while (it != particles.end()) {
+		if (it->pos.x > 95)
+			it = particles.erase(it);
+		else it++;
+	}
+	*/
+
 	float substepNumber = 1;
 	for (int substep = 0; substep < substepNumber; substep++) 
 	{
@@ -44,26 +53,11 @@ void XpbdSolver::solve(float deltaTime)
 
 		float fac = 1/1200.f;
 
-		// Calculate Densities
-		/*
-		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-		{
-			Particle& particle = particles[particleIndex];
-			particle.density = getDensity(particle.pos + particle.vel*fac);
-		}
-		*/
-
-		Vec2 gravityAccel(0.f, 9.81f);
+		Vec2 gravityAccel(0.f,  3*9.81f);
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++) 
 		{
 			Particle& particle = particles[particleIndex];
 			oldPositions.push_back(particle.pos);
-
-
-
-			// Apply pressureforce
-			if (particle.density != 0)
-				;// particle.vel = (getPressureForce(particle, fac) / particle.density) * dt;
 
 			if (gravity && particleIndex != 0)
 				particle.vel -= gravityAccel * dt;
@@ -72,7 +66,6 @@ void XpbdSolver::solve(float deltaTime)
 		}
 
 		ConstraintManager::solveConstraints(particles, dt);
-		//calculateSPH();
 
 		for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 		{
@@ -80,6 +73,7 @@ void XpbdSolver::solve(float deltaTime)
 			particle.vel = (particle.pos - oldPositions[particleIndex]) / dt;
 		}
 	}
+
 }
 
 void XpbdSolver::addSoftBody(Vec2 pos)
@@ -134,7 +128,8 @@ void XpbdSolver::addParticle(Vec2 pos, Vec2 vel)
 			0.5f,
 			pos,
 			vel,
-			color
+			color,
+			true
 		)
 	);
 
@@ -212,6 +207,31 @@ static float kernelGrad_2(float radius, float distance)
 	return (-24 * distance * pow(pow(radius, 2) - pow(distance, 2), 2) / (3.1415926535 * pow(radius, 8)));
 }
 
+static float DoubleCosKernel(float r, float h)
+{
+	float k = 0.1f;
+
+	float s = r / h;
+	if (k < s)
+		return 0;
+	float sigma2d = M_PI / ((3 * pow(M_PI, 2) - 16) * pow(k * h, 2));
+
+	float val = 4 * cos(s * M_PI / k) + cos(2 * M_PI * s / k) + 3;
+	return val * sigma2d;
+}
+
+static float DobuleCosKernelGrad(float r, float h)
+{
+	float k = 0.1f;
+
+	float s = r / h;
+	if (k < s)
+		return 0;
+	float sigma2d = M_PI / ((3 * pow(M_PI, 2) - 16) * pow(k * h, 2));
+
+	float val = -(4*M_PI/k) * sin(s * M_PI / k) -(2*M_PI/k) * sin(2 * M_PI * s / k);
+	return val * sigma2d;
+}
 
 
 static float densityToPressure(float density)
