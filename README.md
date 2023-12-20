@@ -31,5 +31,6 @@ It is written in C++ and OpenGl is used for visualisation.
 ![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/97f574d7-4f07-436f-96ad-9e73d258cfe6)
 
 ![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/2e626114-48be-404d-aa27-3d471777cc50)
+![image](https://github.com/KarlGauck/XpbdGl/assets/91132264/05e77161-c3c3-40a6-b2f4-e1546ce57754)
 
 
